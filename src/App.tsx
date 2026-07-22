@@ -1,18 +1,20 @@
 import { lazy, Suspense, useState } from 'react'
 import { MathJaxContext } from 'better-react-mathjax'
-import { BookOpenCheck, ChartNoAxesCombined, GraduationCap, House, Menu, PanelLeftClose, Sigma, X } from 'lucide-react'
+import { BookOpenCheck, ChartNoAxesCombined, Flame, GraduationCap, House, Menu, PanelLeftClose, Sigma, X } from 'lucide-react'
 import { CheatSheet } from './components/CheatSheet'
 import { MainDashboard } from './components/MainDashboard'
 import { StepByStepSolver } from './components/StepByStepSolver'
+import { SurvivalPackage } from './components/SurvivalPackage'
 import { subjects, type SubjectCode } from './data'
 import './App.css'
 
 const ConceptVisualizer = lazy(() => import('./components/ConceptVisualizer').then((module) => ({ default: module.ConceptVisualizer })))
 
-type View = 'dashboard' | 'visualizer' | 'solver' | 'cheatsheet'
+type View = 'dashboard' | 'survival' | 'visualizer' | 'solver' | 'cheatsheet'
 
 const navigation: { id: View; label: string; icon: typeof House }[] = [
   { id: 'dashboard', label: 'Dashboard', icon: House },
+  { id: 'survival', label: 'M3 Survival Pack', icon: Flame },
   { id: 'visualizer', label: 'Visual concepts', icon: ChartNoAxesCombined },
   { id: 'solver', label: 'Step solver', icon: BookOpenCheck },
   { id: 'cheatsheet', label: 'Cheat sheet', icon: Sigma },
@@ -52,6 +54,7 @@ function App() {
           </header>
           <div className="content">
             {view === 'dashboard' && <MainDashboard subject={subject} onSubjectChange={setSubject} onNavigate={navigate} />}
+            {view === 'survival' && <SurvivalPackage />}
             {view === 'visualizer' && <Suspense fallback={<div className="panel loading-panel">Loading interactive graph…</div>}><ConceptVisualizer /></Suspense>}
             {view === 'solver' && <StepByStepSolver />}
             {view === 'cheatsheet' && <CheatSheet subject={subject} />}

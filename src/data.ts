@@ -40,7 +40,7 @@ export const subjects: Subject[] = [
   },
   {
     code: '21MAT31',
-    title: 'Transform Calculus & Numerical Techniques',
+    title: 'Transform Calculus, Fourier Series & Numerical Techniques',
     semester: 'Semester 3',
     confidence: 61,
     accent: '#a78bfa',
@@ -48,8 +48,8 @@ export const subjects: Subject[] = [
       { title: 'Laplace Transforms', topics: 'Transforms, inverse and ODEs', priority: 'High' },
       { title: 'Fourier Series', topics: 'Full/half range and harmonics', priority: 'Medium' },
       { title: 'Fourier & Z Transforms', topics: 'Difference equations', priority: 'High' },
-      { title: 'Numerical ODEs', topics: 'RK4, Milne and Adams', priority: 'High' },
-      { title: 'Variational Calculus', topics: 'Euler equation and extremals', priority: 'High' },
+      { title: 'Numerical PDE', topics: 'Classification, wave, heat and Laplace mesh', priority: 'High' },
+      { title: 'Numerical ODE & Variations', topics: 'RK4, Milne, Euler equation and extremals', priority: 'High' },
     ],
   },
   {

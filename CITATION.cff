@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: If you use MathClear in educational work, cite this repository.
+title: MathClear
+type: software
+authors:
+  - family-names: CodeThief831
+repository-code: https://github.com/CodeThief831/MathClear
+url: https://codethief831.github.io/MathClear/
+license: MIT
+version: 1.0.0
+date-released: 2026-07-23
+abstract: Interactive visual mathematics and OCR-informed exam preparation for VTU 2021 Scheme CSE students.
+keywords:
+  - VTU
+  - 21MAT31
+  - engineering mathematics
+  - React
+  - education

@@ -1,6 +1,14 @@
-# MathClear
+<div align="center">
 
-**A visual, exam-focused mathematics learning platform for VTU 2021 Scheme CSE students.**
+![MathClear animated header](https://capsule-render.vercel.app/api?type=waving&height=230&color=0:07101d,45:0f766e,100:2dd4bf&text=MathClear&fontColor=ffffff&fontSize=62&fontAlignY=37&desc=Backlog%20math%20does%20not%20get%20the%20last%20word.&descAlignY=59&animation=fadeIn)
+
+# Stop fearing the paper. Start farming the marks.
+
+**An interactive, exam-focused survival system for VTU 2021 Scheme CSE mathematics.**
+
+<img src="https://readme-typing-svg.demolab.com?font=DM+Sans&weight=700&size=22&pause=900&color=2DD4BF&center=true&vCenter=true&width=760&lines=Visual+intuition+before+theory;Every+algebra+step+shown;15+question-paper+pages+OCR+analyzed;Real+VTU+100-mark+mock+format;No+fake+promises.+Just+better+preparation." alt="MathClear highlights" />
+
+</div>
 
 [![Live Website](https://img.shields.io/badge/Live%20Website-Open%20MathClear-2dd4bf?style=for-the-badge)](https://codethief831.github.io/MathClear/)
 [![Deploy to GitHub Pages](https://github.com/CodeThief831/MathClear/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/CodeThief831/MathClear/actions/workflows/deploy-pages.yml)
@@ -11,6 +19,20 @@
 **https://codethief831.github.io/MathClear/**
 
 MathClear is designed for engineering students carrying mathematics backlogs who need a calm, understandable path from basic intuition to exam-ready solutions. It focuses specifically on the VTU 2021 Scheme mathematics papers relevant to CSE and allied branches.
+
+> **The savage truth:** rereading formulas feels productive until the question paper arrives. MathClear makes the learner move sliders, reveal working, choose an actual paper strategy and write solutions closed-book.
+
+## Why this exists
+
+Backlog preparation often fails for predictable reasons:
+
+- Notes jump from the question directly to the answer
+- Important algebra disappears behind “after simplification”
+- Generic question banks ignore the actual VTU paper structure
+- Students passively read instead of practising complete 20-mark choices
+- Last-day panic treats every topic as equally important
+
+MathClear attacks those problems directly. It does not promise leaked questions or guaranteed marks. It provides a clearer route through the material and a defensible exam strategy.
 
 ## Covered subjects
 
@@ -61,6 +83,30 @@ MathClear is designed for engineering students carrying mathematics backlogs who
 - Encourages method-based partial-mark strategies
 - Breaks revision into recall, understanding and writing practice
 - Avoids streak pressure and overwhelming walls of text
+
+### 21MAT31 OCR-backed survival mock
+
+- Built after OCR processing of all 15 pages in the supplied `M3_ALL.pdf`
+- Covers five arrear examinations from Dec. 2023/Jan. 2024 through Dec. 2025/Jan. 2026
+- Reproduces the real VTU structure: `Q1 OR Q2` through `Q9 OR Q10`
+- Provides five module choices totalling 100 attempted marks
+- Includes question-paper mode with hidden answers and a printable A4 layout
+- Includes evaluation-scheme mode with marks assigned to every expected line
+- Correctly treats Module 4 as numerical PDE
+- Includes recurring Module 5 RK4, Milne, Euler-equation and straight-line patterns
+- Links supporting Take It Easy Engineers 21MAT31 resources for further revision
+
+## What the OCR analysis found
+
+| Module | Historical structure found in the five supplied papers |
+| --- | --- |
+| 1 | Direct/periodic/convolution or unit-step/inverse/ODE by Laplace in every paper |
+| 2 | Full Fourier series, half-range series and tabular harmonic analysis on every choice side |
+| 3 | Fourier-transform family plus direct Z, inverse Z and difference equations |
+| 4 | PDE classification, wave mesh, parabolic mesh and Laplace mesh in every paper |
+| 5 | RK4, Milne, Euler derivation and extremal/geodesic applications |
+
+The mock questions are independently authored from these recurring methods. OCR-damaged expressions were not blindly presented as exact official questions.
 
 ## Reference sources
 
@@ -173,7 +219,9 @@ Improvements are welcome, especially:
 - Accessibility and mobile improvements
 - Corrections to formulas or terminology
 
-Create a branch, make the change, run `npm run lint` and `npm run build`, then open a pull request describing what was improved.
+Read [CONTRIBUTING.md](CONTRIBUTING.md), create a branch, make the change, run `npm run lint` and `npm run build`, then open a pull request describing what was improved.
+
+Community participation follows the [Code of Conduct](CODE_OF_CONDUCT.md). Security issues should follow [SECURITY.md](SECURITY.md), not a public issue.
 
 ## Educational accuracy
 

@@ -1,0 +1,31 @@
+name: Content request
+description: Suggest a verified question, solution or visual explanation.
+title: "[Content]: "
+labels: [enhancement, content]
+body:
+  - type: dropdown
+    id: subject
+    attributes:
+      label: Subject
+      options: [21MAT11, 21MAT21, 21MAT31, 21MATCS41]
+    validations:
+      required: true
+  - type: textarea
+    id: request
+    attributes:
+      label: Requested content
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Official or supporting source URL
+    validations:
+      required: true
+  - type: checkboxes
+    id: rights
+    attributes:
+      label: Content confirmation
+      options:
+        - label: I am not submitting copyrighted material without permission.
+          required: true

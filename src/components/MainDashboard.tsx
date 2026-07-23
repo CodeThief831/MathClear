@@ -26,7 +26,7 @@ export function MainDashboard({ subject, onSubjectChange, onNavigate }: { subjec
       </section>
 
       <section className="survival-banner">
-        <div><span><Flame size={16} /> EXAM TOMORROW</span><h2>21MAT31 one-day survival package</h2><p>Eleven solved, high-return problems across all five modules with simple explanations and an exact study order.</p></div>
+        <div><span><Flame size={16} /> EXAM TOMORROW</span><h2>21MAT31 one-day survival package</h2><p>A realistic 100-mark VTU-pattern paper with OR choices, 30 solved parts and examiner-style mark allocation.</p></div>
         <button className="primary-button" onClick={() => onNavigate('survival')}>Open passing package <ArrowRight size={18} /></button>
       </section>
 

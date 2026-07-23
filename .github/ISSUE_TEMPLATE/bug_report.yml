@@ -1,0 +1,33 @@
+name: Bug report
+description: Report a functional, visual or mathematical problem.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Explain what is wrong and where it appears.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Browser and device
+  - type: textarea
+    id: source
+    attributes:
+      label: Mathematical source
+      description: Required when reporting a formula or solution error.

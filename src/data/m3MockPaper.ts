@@ -477,3 +477,7 @@ export const m3Modules: ModuleChoice[] = [
 ]
 
 export const paperTotal = m3Modules.reduce((total, module) => total + module.optionA.parts.reduce((sum, part) => sum + part.marks, 0), 0)
+export const paperPartCount = m3Modules.reduce(
+  (total, module) => total + module.optionA.parts.length + module.optionB.parts.length,
+  0,
+)

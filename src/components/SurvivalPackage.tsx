@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { MathJax } from 'better-react-mathjax'
 import { AlertTriangle, BookOpenCheck, CheckCircle2, ChevronDown, Clock3, ExternalLink, Eye, EyeOff, Flame, Printer, ShieldCheck, Target } from 'lucide-react'
-import { m3Modules, paperTotal, type FullQuestion, type PaperPart } from '../data/m3MockPaper'
+import { m3Modules, paperPartCount, paperTotal, type FullQuestion, type PaperPart } from '../data/m3MockPaper'
 
 type Mode = 'paper' | 'scheme'
 
@@ -71,7 +71,7 @@ export function SurvivalPackage() {
 
       <section className="panel day-plan no-print"><div className="section-heading"><div><span className="eyebrow"><Clock3 size={14} /> Last-day attack order</span><h2>Do not read everything equally</h2><p>Write first. Review second. Passive reading creates false confidence.</p></div></div><div className="survival-timeline"><article><b>2.5 h</b><strong>M4 Numerical PDE</strong><span>Bender–Schmidt, classification and Laplace averaging.</span></article><article><b>2.5 h</b><strong>M5 Evaluation lines</strong><span>RK pairs, Euler derivation and straight-line proof.</span></article><article><b>2 h</b><strong>M1 Procedures</strong><span>Periodic formula, convolution and ODE flow.</span></article><article><b>1.5 h</b><strong>M2 Guaranteed structure</strong><span>One full series, one half range, one table.</span></article><article><b>1.5 h</b><strong>M3 Z-transform route</strong><span>Choose Q6 and master all three parts.</span></article><article><b>3 h</b><strong>Closed-book mock</strong><span>Paper mode, five selected questions, no peeking.</span></article></div></section>
 
-      <section className="package-summary no-print"><article><Target /><strong>Attempt plan</strong><span>Q1 or Q2, Q3 or Q4, Q5 or Q6, Q7 or Q8, Q9 or Q10.</span></article><article><ShieldCheck /><strong>Evaluation rule</strong><span>Formula → substitution → working → boxed answer.</span></article><article><CheckCircle2 /><strong>Real preparation</strong><span>{completed.length} of 30 parts written closed-book.</span></article></section>
+      <section className="package-summary no-print"><article><Target /><strong>Attempt plan</strong><span>Q1 or Q2, Q3 or Q4, Q5 or Q6, Q7 or Q8, Q9 or Q10.</span></article><article><ShieldCheck /><strong>Evaluation rule</strong><span>Formula → substitution → working → boxed answer.</span></article><article><CheckCircle2 /><strong>Real preparation</strong><span>{completed.length} of {paperPartCount} parts written closed-book.</span></article></section>
 
       <section className="panel source-audit no-print"><h2>Evidence and supporting resources</h2><p>Pattern frequencies come from the locally supplied <code>M3_ALL.pdf</code>: Dec. 2023/Jan. 2024 through Dec. 2025/Jan. 2026. Equations damaged by OCR were not copied blindly; the mock uses independently authored clean values matching recurring methods.</p><div><a href="https://takeiteasyengineers.com/21mat31/21mat31-practice-questions-23/" target="_blank" rel="noreferrer">TIE practice questions <ExternalLink size={14} /></a><a href="https://takeiteasyengineers.com/21mat31/21mat31-simp-23/" target="_blank" rel="noreferrer">TIE SIMP 2023 <ExternalLink size={14} /></a><a href="https://takeiteasyengineers.com/category/21mat31/" target="_blank" rel="noreferrer">TIE 21MAT31 archive <ExternalLink size={14} /></a></div></section>
     </div>

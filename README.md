@@ -108,6 +108,30 @@ MathClear attacks those problems directly. It does not promise leaked questions 
 
 The mock questions are independently authored from these recurring methods. OCR-damaged expressions were not blindly presented as exact official questions.
 
+### 21MATCS41 OCR- and web-cross-checked survival mock
+
+- OCR processes all 11 image-only pages in the supplied `M4_All.pdf`
+- Reconstructs three university-paper structures and compares them with the official VTU syllabus and model paper
+- Cross-checks recurring priorities against Take It Easy Engineers SIMP and MQP resources
+- Provides `Q1 OR Q2` through `Q9 OR Q10`, with 30 fully solved parts
+- Explains every part first in plain English, then gives evaluation-format working and marks
+- Covers logic, relations/functions/graphs, correlation/regression, probability distributions, joint distributions and hypothesis testing
+- Includes mock-test mode, solution mode, closed-book progress and A4 printing
+
+#### What the M4 analysis found
+
+| Module | Highest-recurrence question families |
+| --- | --- |
+| 1 | Tautology, inference, quantifiers and elementary proofs |
+| 2 | Functions, relation/poset properties and graph questions |
+| 3 | Rank correlation, regression and least-squares curve fitting |
+| 4 | PMF/PDF normalization plus Binomial, Poisson and Normal applications |
+| 5 | Joint distributions, tests for means, Student t and chi-square goodness of fit |
+
+TIE particularly highlights Modules 1, 2 and 5. The package still covers Modules 3 and 4 because the VTU paper requires one complete 20-mark question from every module.
+
+> No mock paper can guarantee a pass or predict tomorrow's exact questions. This package improves coverage probability and exam-writing practice; students must write the selected questions independently rather than only reading solutions.
+
 ## Reference sources
 
 The learning structure and reference links are based on:
@@ -115,6 +139,7 @@ The learning structure and reference links are based on:
 - [VTU official 2021 Scheme and syllabus](https://vtu.ac.in/b-e-scheme-syllabus/)
 - [VTU official model question papers](https://vtu.ac.in/model-question-paper-b-e-b-tech-b-arch/1000/)
 - [Take It Easy Engineers — 21MAT31 resources](https://takeiteasyengineers.com/category/21mat31/)
+- [Take It Easy Engineers — 21MATCS41 SIMP for Modules 1, 2 and 5](https://takeiteasyengineers.com/m4/21matcs41-simp-for-csis-simp/)
 - [Take It Easy Engineers — 21MATCS41 model-paper solutions](https://takeiteasyengineers.com/m4/21matcs41-mqp-solutionfor-cse-and-allied-branches/)
 
 MathClear is an independent educational project. It is not affiliated with or endorsed by Visvesvaraya Technological University or Take It Easy Engineers. Source names and links are provided for attribution and student convenience.

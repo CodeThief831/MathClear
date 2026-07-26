@@ -54,16 +54,16 @@ export const subjects: Subject[] = [
   },
   {
     code: '21MATCS41',
-    title: 'Mathematical Foundations for CSE',
+    title: 'Mathematical Foundations for Computing, Probability & Statistics',
     semester: 'Semester 4',
     confidence: 54,
     accent: '#fb7185',
     modules: [
-      { title: 'Probability', topics: 'Random variables and distributions', priority: 'High' },
-      { title: 'Statistics', topics: 'Sampling and hypothesis testing', priority: 'High' },
-      { title: 'Joint Distributions', topics: 'Correlation and regression', priority: 'Medium' },
-      { title: 'Markov Chains', topics: 'State transitions and steady state', priority: 'High' },
-      { title: 'Queuing Theory', topics: 'M/M/1 models and waiting time', priority: 'High' },
+      { title: 'Fundamentals of Logic', topics: 'Truth tables, inference, quantifiers and proofs', priority: 'High' },
+      { title: 'Relations, Functions & Graphs', topics: 'Equivalence, posets, Hasse diagrams and Euler trails', priority: 'High' },
+      { title: 'Statistical Methods', topics: 'Correlation, regression and curve fitting', priority: 'High' },
+      { title: 'Probability Distributions', topics: 'Random variables, Binomial, Poisson and Normal', priority: 'High' },
+      { title: 'Joint Distributions & Sampling', topics: 'Covariance, z/t tests and chi-square', priority: 'High' },
     ],
   },
 ]
@@ -104,14 +104,20 @@ export const formulas: Record<SubjectCode, { group: string; items: { name: strin
     ] },
   ],
   '21MATCS41': [
-    { group: 'Probability', items: [
-      { name: 'Bayes theorem', formula: 'P(A|B)=\\frac{P(B|A)P(A)}{P(B)}', cue: 'Reverse a conditional probability' },
+    { group: 'Statistical Methods', items: [
+      { name: 'Karl Pearson correlation', formula: 'r=\\frac{\\sum(x-\\bar x)(y-\\bar y)}{\\sqrt{\\sum(x-\\bar x)^2\\sum(y-\\bar y)^2}}', cue: 'Measure linear correlation' },
+      { name: 'Spearman rank correlation', formula: '\\rho=1-\\frac{6\\sum d^2}{n(n^2-1)}', cue: 'Compare two rankings without ties' },
+      { name: 'Regression relation', formula: 'r=\\pm\\sqrt{b_{xy}b_{yx}}', cue: 'Find correlation from regression coefficients' },
+    ] },
+    { group: 'Probability Distributions', items: [
       { name: 'Binomial mean', formula: '\\mu=np,\\qquad \\sigma^2=npq', cue: 'Independent success/failure trials' },
       { name: 'Poisson model', formula: 'P(X=x)=e^{-\\lambda}\\frac{\\lambda^x}{x!}', cue: 'Rare events per interval' },
+      { name: 'Normal standardization', formula: 'z=\\frac{x-\\mu}{\\sigma}', cue: 'Convert values to the standard normal table' },
     ] },
-    { group: 'CSE Models', items: [
-      { name: 'Markov transition', formula: '\\pi^{(n)}=\\pi^{(0)}P^n', cue: 'Predict future state probabilities' },
-      { name: 'M/M/1 utilization', formula: '\\rho=\\frac{\\lambda}{\\mu},\\qquad L=\\frac{\\rho}{1-\\rho}', cue: 'Server load and queue length' },
+    { group: 'Hypothesis Testing', items: [
+      { name: 'Large-sample mean test', formula: 'z=\\frac{\\bar x-\\mu_0}{\\sigma/\\sqrt n}', cue: 'Test a population mean when sigma is known' },
+      { name: 'Student t-test', formula: 't=\\frac{\\bar x-\\mu_0}{s/\\sqrt n}', cue: 'Test a mean from a small normal sample' },
+      { name: 'Chi-square statistic', formula: '\\chi^2=\\sum\\frac{(O-E)^2}{E}', cue: 'Test goodness of fit or uniformity' },
     ] },
   ],
 }

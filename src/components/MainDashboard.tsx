@@ -1,6 +1,7 @@
 import { ArrowRight, BookMarked, CalendarDays, CheckCircle2, ExternalLink, Flame, ShieldCheck, Target } from 'lucide-react'
 import { officialLinks, subjects, type SubjectCode } from '../data'
 import { paperPartCount } from '../data/m3MockPaper'
+import { m4PartCount } from '../data/m4MockPaper'
 
 export function MainDashboard({ subject, onSubjectChange, onNavigate }: { subject: SubjectCode; onSubjectChange: (code: SubjectCode) => void; onNavigate: (view: string) => void }) {
   const current = subjects.find((item) => item.code === subject) ?? subjects[2]
@@ -29,6 +30,11 @@ export function MainDashboard({ subject, onSubjectChange, onNavigate }: { subjec
       <section className="survival-banner">
         <div><span><Flame size={16} /> EXAM TOMORROW</span><h2>21MAT31 one-day survival package</h2><p>A realistic 100-mark VTU-pattern paper with OR choices, {paperPartCount} solved parts and examiner-style mark allocation.</p></div>
         <button className="primary-button" onClick={() => onNavigate('survival')}>Open passing package <ArrowRight size={18} /></button>
+      </section>
+
+      <section className="survival-banner m4-banner">
+        <div><span><Flame size={16} /> NEXT EXAM: SEM 4 MATHS</span><h2>21MATCS41 one-day survival package</h2><p>OCR-backed 100-mark paper with {m4PartCount} solved parts covering logic, graph theory, statistics, distributions and hypothesis testing.</p></div>
+        <button className="primary-button" onClick={() => onNavigate('m4-survival')}>Open M4 package <ArrowRight size={18} /></button>
       </section>
 
       <section>

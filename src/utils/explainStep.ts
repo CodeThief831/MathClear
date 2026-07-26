@@ -8,6 +8,8 @@ const explanations: Array<[RegExp, string]> = [
   [/convolution/i, 'A product of two transforms becomes a special time-domain integral. Match each factor first, then join them with convolution.'],
   [/periodic|split at the corner|repeat factor/i, 'The wave repeats, so calculate only one complete period. Split the integral wherever the formula for the wave changes.'],
   [/symmetry|even|odd function/i, 'Check whether the graph mirrors itself. Even symmetry removes sine terms; odd symmetry removes cosine terms and saves work.'],
+  [/solve coefficients|solve for a|solve for b|solve for c|solve constants/i, 'Solve the small simultaneous equations to find the unknown numbers in the fitted curve. Substitute one result into another equation and check each value.'],
+  [/estimate/i, 'Put the requested x-value into the fitted equation. This uses the model you just found to predict the missing y-value.'],
   [/coefficient|a₀|a_n|b_n|sine-series|cosine-series/i, 'This coefficient measures how much of one sine or cosine wave is hidden inside the function. Substitute the function and integrate over the stated interval.'],
   [/integration by parts|integrate twice/i, 'The integrand is a product, so integration by parts separates it. Repeat only when a product still remains.'],
   [/deduce|put x|set x/i, 'Choose a special x-value that turns the trigonometric terms into simple numbers. The Fourier series then becomes the required numerical sum.'],

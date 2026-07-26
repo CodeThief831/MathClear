@@ -23,8 +23,9 @@ const navigation: { id: View; label: string; icon: typeof House }[] = [
 ]
 
 function App() {
-  const [view, setView] = useState<View>('dashboard')
-  const [subject, setSubject] = useState<SubjectCode>('21MAT31')
+  const initialHandbook = new URLSearchParams(window.location.search).get('handbook')
+  const [view, setView] = useState<View>(initialHandbook === 'm4' ? 'm4-survival' : 'dashboard')
+  const [subject, setSubject] = useState<SubjectCode>(initialHandbook === 'm4' ? '21MATCS41' : '21MAT31')
   const [menuOpen, setMenuOpen] = useState(false)
   const current = subjects.find((item) => item.code === subject) ?? subjects[2]
 

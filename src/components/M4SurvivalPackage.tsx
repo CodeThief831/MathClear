@@ -11,7 +11,8 @@ const questionMarks = (question: FullQuestion) => question.parts.reduce((sum, pa
 const stepMarks = (part: PaperPart) => part.steps.reduce((sum, step) => sum + step.marks, 0)
 
 export function M4SurvivalPackage() {
-  const [mode, setMode] = useState<Mode>('paper')
+  const handbookMode = new URLSearchParams(window.location.search).get('handbook') === 'm4'
+  const [mode, setMode] = useState<Mode>(handbookMode ? 'scheme' : 'paper')
   const [selected, setSelected] = useState<Record<number, 'A' | 'B'>>({ 1: 'A', 2: 'B', 3: 'A', 4: 'A', 5: 'B' })
   const [openPart, setOpenPart] = useState('')
   const [completed, setCompleted] = useState<string[]>([])
@@ -19,7 +20,37 @@ export function M4SurvivalPackage() {
   const choose = (module: number, option: 'A' | 'B') => setSelected((current) => ({ ...current, [module]: option }))
   const toggleComplete = (id: string) => setCompleted((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id])
 
-  return <div className="survival-stack m4-survival">
+  const openHandbook = () => {
+    const url = new URL(window.location.href)
+    url.searchParams.set('handbook', 'm4')
+    window.location.href = url.toString()
+  }
+
+  return <div className={`survival-stack m4-survival ${handbookMode ? 'handbook-mode' : ''}`}>
+    {handbookMode && <section className="handbook-cover">
+      <span>MathClear · VTU 2021 Scheme</span>
+      <h1>21MATCS41 Complete Revision Handbook</h1>
+      <h2>Mathematical Foundations for Computing, Probability and Statistics</h2>
+      <p>All 30 practice parts with plain-English intuition, formula meanings, stepwise VTU-style working, mark allocation and final answers.</p>
+      <div><b>Preparation target</b><strong>60+ raw marks</strong><small>Prepare above the minimum. No handbook can guarantee an examination result.</small></div>
+    </section>}
+
+    {handbookMode && <section className="handbook-guide">
+      <h2>How to use this book so the answer stays in your head</h2>
+      <ol><li><b>Read:</b> Read the plain-English idea once.</li><li><b>Cover:</b> Hide the formal solution.</li><li><b>Recall:</b> Say the formula and next step aloud.</li><li><b>Write:</b> Reproduce the answer without looking.</li><li><b>Check:</b> Compare every line and correct mistakes.</li></ol>
+      <p><b>Important:</b> Passive reading alone cannot guarantee a pass. Writing each selected answer at least once is the reliable preparation method.</p>
+      <h3>Source and verification policy</h3>
+      <ul><li><b>Primary authority:</b> official VTU 2021 Scheme syllabus, official VTU model-paper structure and supplied VTU examination papers.</li><li><b>Secondary cross-check:</b> Take It Easy Engineers SIMP/MQP listings are used only to compare importance—not to override the VTU syllabus or claim exact predictions.</li><li><b>Solutions:</b> independently written in a VTU-style sequence; not an official VTU evaluation key.</li></ul>
+    </section>}
+
+    {handbookMode && <section className="handbook-glossary">
+      <h2>Full forms and formula language</h2>
+      <div className="glossary-grid">
+        <article><b>VTU</b><span>Visvesvaraya Technological University</span></article><article><b>SEE</b><span>Semester End Examination</span></article><article><b>CIE</b><span>Continuous Internal Evaluation</span></article><article><b>PMF</b><span>Probability Mass Function — probabilities for discrete values</span></article><article><b>PDF</b><span>Probability Density Function — density for a continuous variable</span></article><article><b>SD</b><span>Standard Deviation — typical spread around the mean</span></article><article><b>H₀</b><span>Null Hypothesis — the claim tested first</span></article><article><b>H₁</b><span>Alternative Hypothesis — the competing claim</span></article><article><b>SE</b><span>Standard Error — expected sample-to-sample variation</span></article><article><b>df</b><span>Degrees of Freedom — independent information used by a test</span></article><article><b>χ²</b><span>Chi-square — goodness-of-fit test statistic</span></article><article><b>r / ρ</b><span>Correlation coefficient — strength and direction of association</span></article>
+      </div>
+      <h3>How to read the common formulas</h3>
+      <ul><li><b>z = (x̄ − μ₀)/(σ/√n):</b> observed mean difference divided by its standard error.</li><li><b>t = (x̄ − μ₀)/(s/√n):</b> small-sample mean test when population SD is unknown.</li><li><b>χ² = Σ(O − E)²/E:</b> add the squared observed–expected differences divided by expected counts.</li><li><b>P(X=x)=e⁻λλˣ/x!:</b> Poisson probability for exactly x events when the mean is λ.</li><li><b>ρ = 1 − 6Σd²/[n(n²−1)]:</b> Spearman correlation from differences between two rankings.</li></ul>
+    </section>}
     <section className="survival-hero mock-hero m4-hero">
       <div><span className="urgent-badge"><Flame size={15} /> VTU 2021 Scheme verified</span><h1>21MATCS41 Mathematics IV<br /><em>VTU-aligned practice paper</em></h1><p>Module coverage and paper structure are checked against the official VTU syllabus/model paper and the supplied VTU examination scans.</p></div>
       <div className="survival-score"><strong>{selectedMarks}/{m4PaperTotal}</strong><span>attempt plan selected</span><div><i style={{ width: `${selectedMarks}%` }} /></div></div>
@@ -29,7 +60,7 @@ export function M4SurvivalPackage() {
 
     <section className="analysis-strip"><article><strong>3</strong><span>university papers</span></article><article><strong>11</strong><span>pages OCR processed</span></article><article><strong>10</strong><span>full questions</span></article><article><strong>30</strong><span>solved parts</span></article></section>
 
-    <section className="panel mock-controls no-print"><div><span className="eyebrow"><Eye size={14} /> Display mode</span><h2>{mode === 'paper' ? 'VTU practice-paper mode' : 'VTU-style solution mode'}</h2><p>{mode === 'paper' ? 'Set a 3-hour timer and choose one complete question per module.' : 'Each answer follows: Given/definition → formula/theorem → substitution → working → boxed result.'}</p></div><div className="mock-action-row"><button className={mode === 'paper' ? 'active' : ''} onClick={() => setMode('paper')}><EyeOff size={17} /> Practice paper</button><button className={mode === 'scheme' ? 'active' : ''} onClick={() => setMode('scheme')}><BookOpenCheck size={17} /> VTU-style solutions</button><button onClick={() => window.print()}><Printer size={17} /> Print</button></div></section>
+    <section className="panel mock-controls no-print"><div><span className="eyebrow"><Eye size={14} /> Display mode</span><h2>{mode === 'paper' ? 'VTU practice-paper mode' : 'VTU-style solution mode'}</h2><p>{mode === 'paper' ? 'Set a 3-hour timer and choose one complete question per module.' : 'Each answer follows: Given/definition → formula/theorem → substitution → working → boxed result.'}</p></div><div className="mock-action-row"><button className={mode === 'paper' ? 'active' : ''} onClick={() => setMode('paper')}><EyeOff size={17} /> Practice paper</button><button className={mode === 'scheme' ? 'active' : ''} onClick={() => setMode('scheme')}><BookOpenCheck size={17} /> VTU-style solutions</button><button onClick={openHandbook}><BookOpenCheck size={17} /> Complete handbook</button><a className="pdf-download-button" href={`${import.meta.env.BASE_URL}MathClear_21MATCS41_Complete_Revision_Handbook.pdf`} download><ExternalLink size={17} /> Download PDF</a><button onClick={() => window.print()}><Printer size={17} /> Print</button></div></section>
 
     <section className="paper-sheet">
       <header className="paper-header"><div><strong>21MATCS41</strong><span>VTU-Aligned Practice Paper · 2021 Scheme</span></div><h2>Mathematical Foundations for Computing, Probability and Statistics</h2><div className="paper-meta"><span>Time: 3 Hours</span><span>Max. Marks: 100</span></div><p><b>Note:</b> Answer any FIVE full questions, choosing ONE full question from each module. Use statistical tables where necessary.</p></header>
@@ -43,7 +74,7 @@ export function M4SurvivalPackage() {
               <div className="full-question-head"><h3>Q{question.number}</h3><span>{questionMarks(question)} Marks</span><button className="no-print" onClick={() => choose(module.module, key)}>{selected[module.module] === key ? <><CheckCircle2 size={16} /> Selected</> : 'Choose this question'}</button></div>
               {question.parts.map((part) => {
                 const id = `m4-${question.number}${part.label}`
-                const expanded = openPart === id
+                const expanded = handbookMode || openPart === id
                 const validScheme = stepMarks(part) === part.marks
                 return <div className="paper-part" key={id}>
                   <button className="paper-part-prompt" onClick={() => mode === 'scheme' && setOpenPart(expanded ? '' : id)} disabled={mode === 'paper'}><b>{question.number}({part.label})</b><div><span>{part.prompt}</span><small>{part.topic} · {part.recurrence}</small></div><em>[{String(part.marks).padStart(2, '0')} Marks]</em>{mode === 'scheme' && <ChevronDown size={18} />}</button>

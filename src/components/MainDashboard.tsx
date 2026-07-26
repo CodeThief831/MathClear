@@ -34,7 +34,7 @@ export function MainDashboard({ subject, onSubjectChange, onNavigate }: { subjec
 
       <section className="survival-banner m4-banner">
         <div><span><Flame size={16} /> VTU 2021 SCHEME</span><h2>21MATCS41 VTU-aligned practice paper</h2><p>A 100-mark paper following official VTU syllabus topics, with {m4PartCount} solved parts covering logic, graph theory, statistics, distributions and hypothesis testing.</p></div>
-        <button className="primary-button" onClick={() => onNavigate('m4-survival')}>Open VTU practice <ArrowRight size={18} /></button>
+        <div className="banner-actions"><button className="primary-button" onClick={() => onNavigate('m4-survival')}>Open VTU practice <ArrowRight size={18} /></button><a className="secondary-button" href={`${import.meta.env.BASE_URL}MathClear_21MATCS41_Complete_Revision_Handbook.pdf`} download>Download PDF</a></div>
       </section>
 
       <section>

@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { MathJax } from 'better-react-mathjax'
 import { AlertTriangle, BookOpenCheck, CheckCircle2, ChevronDown, Clock3, ExternalLink, Eye, EyeOff, Flame, Printer, ShieldCheck, Target } from 'lucide-react'
 import { m4Modules, m4PaperTotal, m4PartCount } from '../data/m4MockPaper'
 import type { FullQuestion, PaperPart } from '../data/m3MockPaper'
+import { ReadableMath } from './ReadableMath'
+import { explainStep } from '../utils/explainStep'
 
 type Mode = 'paper' | 'scheme'
 
@@ -48,8 +49,8 @@ export function M4SurvivalPackage() {
                   <button className="paper-part-prompt" onClick={() => mode === 'scheme' && setOpenPart(expanded ? '' : id)} disabled={mode === 'paper'}><b>{question.number}({part.label})</b><div><span>{part.prompt}</span><small>{part.topic} · {part.recurrence}</small></div><em>[{String(part.marks).padStart(2, '0')} Marks]</em>{mode === 'scheme' && <ChevronDown size={18} />}</button>
                   {mode === 'scheme' && expanded && <div className="evaluation-scheme">
                     <div className="child-explanation"><span>First understand this in plain English</span><p>{part.simpleIdea}</p></div>
-                    <div className="scheme-table"><div className="scheme-row heading"><span>What to write in the exam</span><b>Marks</b></div>{part.steps.map((step, index) => <div className="scheme-row" key={`${id}-${index}`}><span><strong>{step.label}</strong>{step.math && <MathJax dynamic>{`\\(${step.math}\\)`}</MathJax>}{step.text && <p>{step.text}</p>}</span><b>{step.marks}</b></div>)}<div className="scheme-row total"><span>Total {validScheme ? <CheckCircle2 size={15} /> : <AlertTriangle size={15} />}</span><b>{stepMarks(part)}/{part.marks}</b></div></div>
-                    <div className="final-answer"><span>Final answer</span><MathJax dynamic>{`\\(\\boxed{${part.finalAnswer}}\\)`}</MathJax></div>
+                    <div className="scheme-table"><div className="scheme-row heading"><span>What to write in the exam</span><b>Marks</b></div>{part.steps.map((step, index) => <div className="scheme-row" key={`${id}-${index}`}><span><strong><i>Step {index + 1}</i>{step.label}</strong><p className="step-why"><b>Why?</b> {explainStep(step)}</p>{step.text && <p className="step-working">{step.text}</p>}{step.math && <ReadableMath math={step.math} />}</span><b>{step.marks}</b></div>)}<div className="scheme-row total"><span>Total {validScheme ? <CheckCircle2 size={15} /> : <AlertTriangle size={15} />}</span><b>{stepMarks(part)}/{part.marks}</b></div></div>
+                    <div className="final-answer"><span>Final answer — write this clearly and box it</span><ReadableMath math={part.finalAnswer} className="final-math" /></div>
                     <button className={completed.includes(id) ? 'complete-button completed' : 'complete-button'} onClick={() => toggleComplete(id)}>{completed.includes(id) ? <><CheckCircle2 size={17} /> Written closed-book</> : 'Mark after writing closed-book'}</button>
                   </div>}
                 </div>

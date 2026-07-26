@@ -12,7 +12,7 @@ node_modules
 dist
 dist-ssr
 *.local
-MathClear_21MATCS41_Complete_Revision_Handbook.pdf
+/MathClear_21MATCS41_Complete_Revision_Handbook.pdf
 handbook_extracted.txt
 handbook_pdf_audit.json
 pdf_preview/

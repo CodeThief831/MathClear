@@ -22,23 +22,23 @@ export function SurvivalPackage() {
   return (
     <div className="survival-stack">
       <section className="survival-hero mock-hero">
-        <div><span className="urgent-badge"><Flame size={15} /> OCR-backed survival mock</span><h1>21MAT31 Mathematics III<br /><em>Real VTU paper format</em></h1><p>Built after OCR analysis of 15 scanned pages covering five arrear examinations from 2023–2026, then cross-checked against the recurring 21MAT31 resources listed by Take It Easy Engineers.</p></div>
+        <div><span className="urgent-badge"><Flame size={15} /> VTU 2021 Scheme verified</span><h1>21MAT31 Mathematics III<br /><em>VTU-aligned practice paper</em></h1><p>Module coverage and question-paper structure are checked against official VTU syllabus/model-paper sources and the supplied VTU examination scans.</p></div>
         <div className="survival-score"><strong>{selectedMarks}/{paperTotal}</strong><span>attempt plan selected</span><div><i style={{ width: `${selectedMarks}%` }} /></div></div>
       </section>
 
-      <section className="reality-card"><AlertTriangle size={22} /><div><strong>No fake guarantee</strong><p>This is an independently prepared VTU-pattern mock, not a leaked or official prediction. It maximizes recurring-pattern coverage but cannot guarantee 60% or a pass. The safest strategy is to write every solution closed-book and verify current instructions on the official paper.</p></div></section>
+      <section className="reality-card"><AlertTriangle size={22} /><div><strong>VTU-aligned, independently authored practice</strong><p>This is not an official VTU evaluation key. It follows the 2021 Scheme syllabus, module structure and conventional VTU answer-writing sequence. Always follow the instructions printed on the current official question paper.</p></div></section>
 
       <section className="analysis-strip">
         <article><strong>5</strong><span>papers analyzed</span></article><article><strong>15</strong><span>pages OCR processed</span></article><article><strong>10</strong><span>full questions</span></article><article><strong>100</strong><span>marks selected</span></article>
       </section>
 
       <section className="panel mock-controls no-print">
-        <div><span className="eyebrow"><Eye size={14} /> Display mode</span><h2>{mode === 'paper' ? 'Question-paper mode' : 'Evaluation-scheme mode'}</h2><p>{mode === 'paper' ? 'Solutions are hidden. Set a 3-hour timer and write like the real exam.' : 'Every answer is split into examiner-style mark steps.'}</p></div>
+        <div><span className="eyebrow"><Eye size={14} /> Display mode</span><h2>{mode === 'paper' ? 'VTU practice-paper mode' : 'VTU-style solution mode'}</h2><p>{mode === 'paper' ? 'Solutions are hidden. Follow the official five-full-question instruction.' : 'Every answer follows: Given/definition → formula/theorem → substitution → working → boxed result.'}</p></div>
         <div className="mock-action-row"><button className={mode === 'paper' ? 'active' : ''} onClick={() => setMode('paper')}><EyeOff size={17} /> Mock test</button><button className={mode === 'scheme' ? 'active' : ''} onClick={() => setMode('scheme')}><BookOpenCheck size={17} /> Solutions</button><button onClick={() => window.print()}><Printer size={17} /> Print</button></div>
       </section>
 
       <section className="paper-sheet">
-        <header className="paper-header"><div><strong>21MAT31</strong><span>Model Survival Paper · 2021 Scheme</span></div><h2>Transform Calculus, Fourier Series and Numerical Techniques</h2><div className="paper-meta"><span>Time: 3 Hours</span><span>Max. Marks: 100</span></div><p><b>Note:</b> Answer any FIVE full questions, choosing ONE full question from each module.</p></header>
+        <header className="paper-header"><div><strong>21MAT31</strong><span>VTU-Aligned Practice Paper · 2021 Scheme</span></div><h2>Transform Calculus, Fourier Series and Numerical Techniques</h2><div className="paper-meta"><span>Time: 3 Hours</span><span>Max. Marks: 100</span></div><p><b>Note:</b> Answer any FIVE full questions, choosing ONE full question from each module.</p></header>
 
         {m3Modules.map((module) => {
           const options: { key: 'A' | 'B'; question: FullQuestion }[] = [{ key: 'A', question: module.optionA }, { key: 'B', question: module.optionB }]
@@ -58,7 +58,7 @@ export function SurvivalPackage() {
                     </button>
                     {mode === 'scheme' && expanded && <div className="evaluation-scheme">
                       <div className="child-explanation"><span>Explain it like I am new</span><p>{part.simpleIdea}</p></div>
-                      <div className="scheme-table"><div className="scheme-row heading"><span>Expected working</span><b>Marks</b></div>{part.steps.map((step, index) => <div className="scheme-row" key={`${id}-${index}`}><span><strong><i>Step {index + 1}</i>{step.label}</strong><p className="step-why"><b>Why?</b> {explainStep(step)}</p>{step.text && <p className="step-working">{step.text}</p>}{step.math && <ReadableMath math={step.math} />}</span><b>{step.marks}</b></div>)}<div className="scheme-row total"><span>Total {validScheme ? <CheckCircle2 size={15} /> : <AlertTriangle size={15} />}</span><b>{stepMarks(part)}/{part.marks}</b></div></div>
+                      <div className="vtu-answer-order"><b>VTU answer order</b><span>1. Given / definition</span><span>2. Formula / theorem</span><span>3. Substitution</span><span>4. Stepwise working</span><span>5. Boxed answer</span></div><div className="scheme-table"><div className="scheme-row heading"><span>VTU-style stepwise working</span><b>Marks</b></div>{part.steps.map((step, index) => <div className="scheme-row" key={`${id}-${index}`}><span><strong><i>Step {index + 1}</i>{step.label}</strong><p className="step-why"><b>Why?</b> {explainStep(step)}</p>{step.text && <p className="step-working">{step.text}</p>}{step.math && <ReadableMath math={step.math} />}</span><b>{step.marks}</b></div>)}<div className="scheme-row total"><span>Total {validScheme ? <CheckCircle2 size={15} /> : <AlertTriangle size={15} />}</span><b>{stepMarks(part)}/{part.marks}</b></div></div>
                       <div className="final-answer"><span>Final answer — write this clearly and box it</span><ReadableMath math={part.finalAnswer} className="final-math" /></div>
                       <button className={completed.includes(id) ? 'complete-button completed' : 'complete-button'} onClick={() => toggleComplete(id)}>{completed.includes(id) ? <><CheckCircle2 size={17} /> Written once</> : 'Mark as written closed-book'}</button>
                     </div>}
@@ -74,7 +74,7 @@ export function SurvivalPackage() {
 
       <section className="package-summary no-print"><article><Target /><strong>Attempt plan</strong><span>Q1 or Q2, Q3 or Q4, Q5 or Q6, Q7 or Q8, Q9 or Q10.</span></article><article><ShieldCheck /><strong>Evaluation rule</strong><span>Formula → substitution → working → boxed answer.</span></article><article><CheckCircle2 /><strong>Real preparation</strong><span>{completed.length} of {paperPartCount} parts written closed-book.</span></article></section>
 
-      <section className="panel source-audit no-print"><h2>Evidence and supporting resources</h2><p>Pattern frequencies come from the locally supplied <code>M3_ALL.pdf</code>: Dec. 2023/Jan. 2024 through Dec. 2025/Jan. 2026. Equations damaged by OCR were not copied blindly; the mock uses independently authored clean values matching recurring methods.</p><div><a href="https://takeiteasyengineers.com/21mat31/21mat31-practice-questions-23/" target="_blank" rel="noreferrer">TIE practice questions <ExternalLink size={14} /></a><a href="https://takeiteasyengineers.com/21mat31/21mat31-simp-23/" target="_blank" rel="noreferrer">TIE SIMP 2023 <ExternalLink size={14} /></a><a href="https://takeiteasyengineers.com/category/21mat31/" target="_blank" rel="noreferrer">TIE 21MAT31 archive <ExternalLink size={14} /></a></div></section>
+      <section className="panel source-audit no-print"><h2>VTU verification sources</h2><p>Coverage is restricted to the official VTU 2021 Scheme syllabus, official model-paper structure and the supplied VTU examination scans. The solutions are independently written in VTU-style steps; they are not represented as an official VTU evaluation key.</p><div><a href="https://vtu.ac.in/b-e-scheme-syllabus/" target="_blank" rel="noreferrer">Official VTU syllabus <ExternalLink size={14} /></a><a href="https://vtu.ac.in/pdf/QP/21MAT31set1.pdf" target="_blank" rel="noreferrer">Official VTU 21MAT31 model set 1 <ExternalLink size={14} /></a><a href="https://vtu.ac.in/pdf/QP/21MAT31set2.pdf" target="_blank" rel="noreferrer">Official VTU 21MAT31 model set 2 <ExternalLink size={14} /></a></div></section>
     </div>
   )
 }

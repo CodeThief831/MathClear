@@ -15,8 +15,8 @@ type View = 'dashboard' | 'survival' | 'm4-survival' | 'visualizer' | 'solver' |
 
 const navigation: { id: View; label: string; icon: typeof House }[] = [
   { id: 'dashboard', label: 'Dashboard', icon: House },
-  { id: 'survival', label: 'M3 · 21MAT31 Pack', icon: Flame },
-  { id: 'm4-survival', label: 'M4 · 21MATCS41 Pack', icon: Flame },
+  { id: 'survival', label: '21MAT31 · VTU Practice', icon: Flame },
+  { id: 'm4-survival', label: '21MATCS41 · VTU Practice', icon: Flame },
   { id: 'visualizer', label: 'Visual concepts', icon: ChartNoAxesCombined },
   { id: 'solver', label: 'Step solver', icon: BookOpenCheck },
   { id: 'cheatsheet', label: 'Cheat sheet', icon: Sigma },

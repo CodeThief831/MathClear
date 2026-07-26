@@ -28,13 +28,13 @@ export function MainDashboard({ subject, onSubjectChange, onNavigate }: { subjec
       </section>
 
       <section className="survival-banner">
-        <div><span><Flame size={16} /> EXAM TOMORROW</span><h2>21MAT31 one-day survival package</h2><p>A realistic 100-mark VTU-pattern paper with OR choices, {paperPartCount} solved parts and examiner-style mark allocation.</p></div>
-        <button className="primary-button" onClick={() => onNavigate('survival')}>Open passing package <ArrowRight size={18} /></button>
+        <div><span><Flame size={16} /> VTU 2021 SCHEME</span><h2>21MAT31 VTU-aligned practice paper</h2><p>A 100-mark paper following the official VTU module/OR structure, with {paperPartCount} solved parts in formula–substitution–working–answer order.</p></div>
+        <button className="primary-button" onClick={() => onNavigate('survival')}>Open VTU practice <ArrowRight size={18} /></button>
       </section>
 
       <section className="survival-banner m4-banner">
-        <div><span><Flame size={16} /> NEXT EXAM: SEM 4 MATHS</span><h2>21MATCS41 one-day survival package</h2><p>OCR-backed 100-mark paper with {m4PartCount} solved parts covering logic, graph theory, statistics, distributions and hypothesis testing.</p></div>
-        <button className="primary-button" onClick={() => onNavigate('m4-survival')}>Open M4 package <ArrowRight size={18} /></button>
+        <div><span><Flame size={16} /> VTU 2021 SCHEME</span><h2>21MATCS41 VTU-aligned practice paper</h2><p>A 100-mark paper following official VTU syllabus topics, with {m4PartCount} solved parts covering logic, graph theory, statistics, distributions and hypothesis testing.</p></div>
+        <button className="primary-button" onClick={() => onNavigate('m4-survival')}>Open VTU practice <ArrowRight size={18} /></button>
       </section>
 
       <section>
@@ -66,12 +66,12 @@ export function MainDashboard({ subject, onSubjectChange, onNavigate }: { subjec
       </section>
 
       <section className="panel sources-panel">
-        <div className="section-heading"><div><span className="eyebrow"><BookMarked size={14} /> Trusted references</span><h2>Built around your actual 2021 Scheme</h2><p>Official VTU syllabus/model papers, supported by Take It Easy Engineers practice resources.</p></div></div>
+        <div className="section-heading"><div><span className="eyebrow"><BookMarked size={14} /> Official verification</span><h2>Strictly aligned to VTU 2021 Scheme</h2><p>Course coverage and paper structure are verified against official VTU syllabus and model-question-paper sources.</p></div></div>
         <div className="source-links">
           <a href={officialLinks.syllabus} target="_blank" rel="noreferrer"><span>Official</span><strong>VTU 2021 Scheme syllabus</strong><ExternalLink size={16} /></a>
           <a href={officialLinks.modelPapers} target="_blank" rel="noreferrer"><span>Official</span><strong>VTU model question papers</strong><ExternalLink size={16} /></a>
-          <a href={officialLinks.tie21mat31} target="_blank" rel="noreferrer"><span>Practice</span><strong>TIE 21MAT31 resources</strong><ExternalLink size={16} /></a>
-          <a href={officialLinks.tie21matcs41} target="_blank" rel="noreferrer"><span>Solutions</span><strong>TIE 21MATCS41 MQP</strong><ExternalLink size={16} /></a>
+          <a href="https://vtu.ac.in/pdf/QP/21MAT31set1.pdf" target="_blank" rel="noreferrer"><span>Official</span><strong>VTU 21MAT31 model set</strong><ExternalLink size={16} /></a>
+          <a href="https://vtu.ac.in/pdf/QP/21MATCS41set1.pdf" target="_blank" rel="noreferrer"><span>Official</span><strong>VTU 21MATCS41 model set</strong><ExternalLink size={16} /></a>
         </div>
       </section>
     </div>

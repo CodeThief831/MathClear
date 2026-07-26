@@ -125,6 +125,4 @@ export const formulas: Record<SubjectCode, { group: string; items: { name: strin
 export const officialLinks = {
   syllabus: 'https://vtu.ac.in/b-e-scheme-syllabus/',
   modelPapers: 'https://vtu.ac.in/model-question-paper-b-e-b-tech-b-arch/1000/',
-  tie21mat31: 'https://takeiteasyengineers.com/category/21mat31/',
-  tie21matcs41: 'https://takeiteasyengineers.com/m4/21matcs41-mqp-solutionfor-cse-and-allied-branches/',
 }

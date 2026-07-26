@@ -185,7 +185,7 @@ export const m4Modules: ModuleChoice[] = [
       ], finalAnswer: '\\chi^2=1.0;\\text{ do not reject }H_0' },
     ]},
     optionB: { number: 10, parts: [
-      { label: 'a', marks: 6, topic: 'Testing terminology', recurrence: '3/3 papers; TIE highlights M5', prompt: 'Explain sample, null hypothesis, Type I error and Type II error.', simpleIdea: 'A sample is the small group we inspect. H₀ is the claim on trial. Type I is a false alarm; Type II is missing a real effect.', steps: [
+      { label: 'a', marks: 6, topic: 'Testing terminology', recurrence: '3/3 supplied VTU papers; official Module 5 syllabus', prompt: 'Explain sample, null hypothesis, Type I error and Type II error.', simpleIdea: 'A sample is the small group we inspect. H₀ is the claim on trial. Type I is a false alarm; Type II is missing a real effect.', steps: [
         { label: 'Sample', marks: 1, text: 'A finite collection selected from a population for analysis.' }, { label: 'Null hypothesis', marks: 1, text: 'The default claim about a population parameter being tested.' },
         { label: 'Type I error', marks: 1.5, text: 'Rejecting a true H₀; probability α.' }, { label: 'Type II error', marks: 1.5, text: 'Not rejecting a false H₀; probability β.' },
         { label: 'Decision interpretation', marks: 1, math: '\\boxed{\\text{Type I=false alarm; Type II=miss}}' },

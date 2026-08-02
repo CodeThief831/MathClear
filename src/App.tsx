@@ -35,7 +35,12 @@ function App() {
   const current = subjects.find((item) => item.code === subject) ?? subjects[2]
 
   const navigate = (next: string) => {
-    setView(next as View)
+    const nextView = next as View
+    if (nextView === 'm1-handbook') setSubject('21MAT11')
+    if (nextView === 'm2-handbook') setSubject('21MAT21')
+    if (nextView === 'survival') setSubject('21MAT31')
+    if (nextView === 'm4-survival') setSubject('21MATCS41')
+    setView(nextView)
     setMenuOpen(false)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }

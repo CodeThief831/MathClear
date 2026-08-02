@@ -31,3 +31,138 @@ main{margin-left:250px;min-height:100vh}.topbar{height:74px;padding:0 clamp(22px
 .pdf-download-button{min-height:42px;padding:0 13px;display:flex;align-items:center;justify-content:center;gap:6px;color:#052e2b;text-decoration:none;border:1px solid #2dd4bf;border-radius:9px;background:#5eead4;font-size:12px;font-weight:800}.pdf-download-button:hover{background:#99f6e4}.banner-actions{display:flex;flex:0 0 auto;gap:8px}.banner-actions .secondary-button{text-decoration:none;white-space:nowrap}@media(max-width:760px){.banner-actions{width:100%;flex-direction:column}.banner-actions>*{width:100%}}
 .m1-banner{border-color:rgba(45,212,191,.45);background:linear-gradient(105deg,rgba(13,148,136,.18),rgba(45,212,191,.05))}.m2-banner{border-color:rgba(251,191,36,.4);background:linear-gradient(105deg,rgba(217,119,6,.16),rgba(251,191,36,.05))}.m2-banner span{color:#fbbf24}.m2-banner .primary-button{border-color:#fbbf24;background:#fbbf24;color:#1f2937}.markdown-handbook{max-width:980px;margin:0 auto;color:#e8f0f8}.markdown-handbook-cover{min-height:680px;padding:65px 45px;display:flex;flex-direction:column;justify-content:center;text-align:center;border:2px solid #2dd4bf;border-radius:18px;background:radial-gradient(circle at 50% 18%,rgba(45,212,191,.22),transparent 30%),linear-gradient(145deg,#07101d,#10243a)}.markdown-handbook-cover>span{color:#5eead4;font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase}.markdown-handbook-cover h1{margin:20px 0 10px;font:800 clamp(34px,5vw,60px)/1.08 'Manrope'}.markdown-handbook-cover h2{margin:0;color:#bccbdb;font:600 21px/1.4 'Manrope'}.markdown-handbook-cover p{max-width:720px;margin:25px auto;color:#cbd7e4;font-size:16px;line-height:1.65}.markdown-handbook-cover>strong{color:#5eead4;font:800 29px 'Manrope'}.markdown-handbook-cover>small{color:#9eafc2}.handbook-actions{margin-top:28px;display:flex;justify-content:center;gap:9px}.handbook-actions a,.handbook-actions button{min-height:44px;padding:0 16px;display:flex;align-items:center;gap:7px;color:#052e2b;text-decoration:none;border:1px solid #2dd4bf;border-radius:9px;background:#5eead4;font-weight:800}.markdown-handbook-body{margin-top:20px;padding:clamp(20px,4vw,48px);border:1px solid var(--line);border-radius:16px;background:#fff;color:#172033}.markdown-handbook-body h1{margin:45px 0 18px;padding-bottom:10px;color:#0f766e;border-bottom:3px solid #14b8a6;font:800 29px 'Manrope'}.markdown-handbook-body h2{margin:36px 0 14px;color:#0f172a;font:750 23px 'Manrope'}.markdown-handbook-body h3{margin:27px 0 10px;color:#1e293b;font:700 18px 'Manrope'}.markdown-handbook-body p,.markdown-handbook-body li{font-size:14px;line-height:1.7}.markdown-handbook-body blockquote{margin:18px 0;padding:14px 18px;color:#7c2d12;border-left:4px solid #f97316;background:#fff7ed}.markdown-handbook-body table{width:100%;margin:16px 0;border-collapse:collapse}.markdown-handbook-body th,.markdown-handbook-body td{padding:8px;border:1px solid #94a3b8;text-align:left}.markdown-handbook-body th{background:#ccfbf1}.markdown-handbook-body mjx-container[display="true"]{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:12px;color:#111827;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;font-size:112%!important}.markdown-handbook-body strong{color:#0f172a}.markdown-handbook-body hr{margin:35px 0;border:0;border-top:1px solid #cbd5e1}@media(max-width:760px){.markdown-handbook-cover{min-height:560px;padding:40px 18px}.markdown-handbook-cover h1{font-size:35px}.markdown-handbook-cover h2{font-size:17px}.handbook-actions{flex-direction:column}.markdown-handbook-body{padding:17px 12px}.markdown-handbook-body h1{font-size:24px}.markdown-handbook-body h2{font-size:20px}.markdown-handbook-body p,.markdown-handbook-body li{font-size:13px}.markdown-handbook-body{overflow-x:hidden}}
 @media print{.markdown-handbook{max-width:none;color:#111827}.markdown-handbook-cover{min-height:260mm;page-break-after:always;color:#111827;border:3px solid #0f766e;background:#fff}.markdown-handbook-cover h2,.markdown-handbook-cover p,.markdown-handbook-cover small{color:#334155}.markdown-handbook-body{margin:0;padding:0;border:0;background:#fff}.markdown-handbook-body h1{page-break-before:always}.markdown-handbook-body h1:first-child{page-break-before:auto}.markdown-handbook-body h2,.markdown-handbook-body h3{break-after:avoid}.markdown-handbook-body p,.markdown-handbook-body li,.markdown-handbook-body mjx-container,.markdown-handbook-body table{break-inside:avoid}.markdown-handbook-body mjx-container[display="true"]{border-color:#94a3b8;background:#fff}@page{size:A4;margin:12mm}}
+
+/* Readable handbook typography and safe mathematical layout. */
+.sidebar{overflow-y:auto;overscroll-behavior:contain}
+.markdown-handbook-cover h1,
+.markdown-handbook-cover h2,
+.markdown-handbook-cover>strong,
+.markdown-handbook-body h1,
+.markdown-handbook-body h2,
+.markdown-handbook-body h3,
+.markdown-handbook-body h4{font-family:'Manrope','Segoe UI',sans-serif}
+.handbook-actions{flex-wrap:wrap}
+.markdown-handbook-body{min-width:0;overflow:visible;font-size:16px;line-height:1.75}
+.markdown-handbook-body p,
+.markdown-handbook-body li{font-size:16px;line-height:1.75}
+.markdown-handbook-body h2{font-weight:700}
+.markdown-handbook-body h4{margin:22px 0 9px;color:#334155;font-size:16px;font-weight:800;line-height:1.4;break-after:avoid}
+.markdown-handbook-body ul,
+.markdown-handbook-body ol{margin:12px 0 18px;padding-left:1.65rem}
+.markdown-handbook-body li{padding-left:.2rem}
+.markdown-handbook-body li+li{margin-top:.4rem}
+.markdown-handbook-body li,
+.markdown-handbook-body p,
+.markdown-handbook-body blockquote{min-width:0;overflow-wrap:anywhere}
+.markdown-handbook-body table{display:block;width:max-content;min-width:100%;max-width:100%;overflow-x:auto;border-collapse:collapse;white-space:nowrap;-webkit-overflow-scrolling:touch}
+.markdown-handbook-body th,
+.markdown-handbook-body td{padding:9px 11px;white-space:normal;min-width:7rem}
+.markdown-handbook-body mjx-container{max-width:100%}
+.markdown-handbook-body mjx-container[display="true"]{margin:1rem 0!important;padding:10px 12px!important;overflow-x:auto;overflow-y:hidden;font-size:clamp(.95rem,2vw,1.08rem)!important;-webkit-overflow-scrolling:touch}
+
+@media(max-width:760px){
+	.markdown-handbook-cover{min-height:auto;padding:48px 18px}
+	.markdown-handbook-cover h1{font-size:clamp(30px,10vw,42px);letter-spacing:-1.2px}
+	.markdown-handbook-cover h2{font-size:18px}
+	.markdown-handbook-cover p{font-size:15px}
+	.markdown-handbook-cover>strong{font-size:24px;line-height:1.25}
+	.handbook-actions{width:100%;flex-direction:column}
+	.handbook-actions a,.handbook-actions button{width:100%;justify-content:center}
+	.markdown-handbook-body{padding:22px 15px;font-size:15px;line-height:1.72;overflow:visible}
+	.markdown-handbook-body p,.markdown-handbook-body li{font-size:15px;line-height:1.72}
+	.markdown-handbook-body h1{font-size:25px;line-height:1.25}
+	.markdown-handbook-body h2{font-size:21px;line-height:1.35}
+	.markdown-handbook-body h3{font-size:18px;line-height:1.4}
+	.markdown-handbook-body h4{font-size:16px}
+	.markdown-handbook-body ul,.markdown-handbook-body ol{padding-left:1.3rem}
+	.markdown-handbook-body mjx-container[display="true"]{padding:9px 8px!important;font-size:.96rem!important}
+}
+
+@media print{
+	.markdown-handbook-body{font-size:10.5pt;line-height:1.5}
+	.markdown-handbook-body p,.markdown-handbook-body li{font-size:10.5pt;line-height:1.5;break-inside:auto;orphans:3;widows:3}
+	.markdown-handbook-body table{display:table;width:100%;max-width:100%;overflow:visible;white-space:normal;font-size:8.5pt}
+	.markdown-handbook-body th,.markdown-handbook-body td{min-width:0;padding:4px 5px}
+	.markdown-handbook-body mjx-container[display="true"]{overflow:visible;font-size:9.5pt!important}
+}
+
+/* M1/M2 use the same question, solution, marks, and answer hierarchy as M3/M4. */
+.markdown-handbook{max-width:1100px}
+.markdown-handbook-cover.handbook-cover{min-height:720px;padding:70px 55px}
+.markdown-handbook-cover.handbook-cover>strong{color:#5eead4;font:800 32px 'Manrope','Segoe UI',sans-serif}
+.markdown-handbook-cover.handbook-cover>small{margin-top:6px;color:#acbdcf;font-size:13px}
+.markdown-handbook-cover.handbook-cover .handbook-actions{padding:0;border:0;background:transparent;flex-direction:row}
+.markdown-handbook-cover.handbook-cover .handbook-actions a,
+.markdown-handbook-cover.handbook-cover .handbook-actions button{min-height:46px;justify-content:center;font-size:14px}
+.m2-handbook .markdown-handbook-cover{border-color:#fbbf24;background:radial-gradient(circle at 50% 18%,rgba(251,191,36,.2),transparent 30%),linear-gradient(145deg,#07101d,#10243a)}
+.m2-handbook .markdown-handbook-cover>span,
+.m2-handbook .markdown-handbook-cover>strong{color:#fbbf24}
+.m2-handbook .handbook-actions a,
+.m2-handbook .handbook-actions button{color:#1f2937;border-color:#fbbf24;background:#fbbf24}
+
+.markdown-handbook-body{padding:clamp(18px,3vw,34px);border-color:#cbd5e1;border-radius:6px;background:#f8fafc;color:#182230}
+.markdown-handbook>span,
+.markdown-handbook-body>span{display:block;min-width:0;max-width:100%;overflow:hidden}
+.markdown-handbook-body p{min-width:0;max-width:100%}
+.markdown-handbook-body mjx-container[display="true"]{width:100%!important;min-width:0!important;max-width:100%!important}
+.markdown-handbook-body>.handbook-study-guide:first-child{margin-top:0}
+.handbook-study-guide{margin:18px 0;padding:18px 20px;border:1px solid #99f6e4;border-left:5px solid #14b8a6;border-radius:10px;background:#ecfdf5;color:#134e4a}
+.handbook-study-guide p{margin:7px 0!important;color:#134e4a}
+.handbook-study-guide strong{color:#0f766e}
+.handbook-paper-title{margin:34px 0 12px!important;padding:24px!important;text-align:center;color:#0f172a!important;border:2px solid #334155!important;border-radius:5px;background:#fff;font-size:clamp(24px,4vw,34px)!important;text-transform:uppercase}
+.handbook-module-title{margin:45px 0 0!important;padding:18px 22px!important;color:#fff!important;border:0!important;border-radius:11px 11px 0 0;background:linear-gradient(110deg,#0f766e,#115e59);font-size:clamp(23px,3vw,30px)!important}
+.m2-handbook .handbook-module-title{background:linear-gradient(110deg,#92400e,#b45309)}
+.handbook-question-title{margin:0!important;padding:18px 22px!important;color:#0f172a!important;border:1px solid #cbd5e1;border-top:0;background:#e2e8f0;font-size:22px!important}
+.handbook-or-title{width:max-content;margin:28px auto!important;padding:7px 25px;color:#475569!important;border:1px solid #94a3b8;border-radius:999px;background:#fff;font-size:14px!important;letter-spacing:2px}
+.handbook-part-title{margin:20px 0 0!important;padding:15px 18px!important;color:#0f172a!important;border:1px solid #cbd5e1;border-left:5px solid #14b8a6;border-radius:9px 9px 0 0;background:#fff;font-size:18px!important;line-height:1.45}
+.m2-handbook .handbook-part-title{border-left-color:#f59e0b}
+.handbook-prompt{margin:0!important;padding:15px 18px;color:#172033;border:1px solid #cbd5e1;border-top:0;background:#fff;font-size:16px!important;font-weight:600}
+.handbook-intuition{margin:0 0 14px!important;padding:14px 18px;color:#78350f!important;border:1px solid #fed7aa;border-top:0;border-left:5px solid #f59e0b;border-radius:0 0 9px 9px;background:#fff7ed;font-size:15px!important;line-height:1.65!important}
+.handbook-intuition strong{color:#c2410c}
+.handbook-solution-title{margin:20px 0 10px!important;padding:11px 14px;color:#052e2b!important;border:1px solid #5eead4;border-radius:9px;background:#ccfbf1;font-size:14px!important;letter-spacing:.65px;text-transform:uppercase}
+.handbook-evaluation-steps{padding:0!important;display:grid;gap:9px;list-style:none;counter-reset:handbook-step}
+.handbook-evaluation-step{position:relative;margin:0!important;padding:16px 18px 16px 58px!important;overflow:hidden;border:1px solid #cbd5e1;border-radius:10px;background:#fff;counter-increment:handbook-step;break-inside:avoid}
+.handbook-evaluation-step::before{content:counter(handbook-step);position:absolute;left:15px;top:15px;width:29px;height:29px;display:grid;place-items:center;color:#052e2b;border-radius:50%;background:#5eead4;font:800 12px 'Manrope','Segoe UI',sans-serif}
+.handbook-evaluation-step>p:first-child{margin-top:0}
+.handbook-evaluation-step>p:last-child{margin-bottom:0}
+.handbook-evaluation-step mjx-container[display="true"],
+.markdown-handbook-body>mjx-container[display="true"],
+.markdown-handbook-body>p>mjx-container[display="true"]{margin:12px 0!important;padding:14px 16px!important;color:#111827;border:1px solid #cbd5e1;border-radius:9px;background:#fff;font-size:18px!important;box-shadow:inset 0 0 0 1px rgba(15,23,42,.03)}
+.handbook-mark-line{width:max-content;margin:10px 0 0 auto!important;padding:5px 9px;color:#78350f!important;border:1px solid #fbbf24;border-radius:999px;background:#fef3c7;font-size:12px!important;font-weight:800;white-space:nowrap}
+.handbook-mark-badge{width:max-content;margin:10px 0 0 auto;padding:5px 9px;display:block;color:#78350f;border:1px solid #fbbf24;border-radius:999px;background:#fef3c7;font-size:12px;font-weight:800;white-space:nowrap}
+.handbook-boxed-result mjx-container[display="true"]{border:2px solid #2dd4bf!important;background:#f0fdfa!important;font-size:20px!important;font-weight:700}
+.handbook-final-label{margin:20px 0 0!important;padding:10px 14px;color:#052e2b!important;border:2px solid #2dd4bf;border-bottom:0;border-radius:12px 12px 0 0;background:#5eead4;font-size:12px!important;font-weight:900;letter-spacing:.7px;text-transform:uppercase}
+.handbook-final-math{margin:0 0 22px!important;padding:3px 14px 14px;border:2px solid #2dd4bf;border-top:0;border-radius:0 0 12px 12px;background:#f0fdfa}
+.handbook-final-math mjx-container[display="true"]{margin:0!important;padding:18px!important;color:#052e2b;border:0;background:#f0fdfa;font-size:21px!important;font-weight:700}
+.handbook-section-rule{height:1px;margin:28px 0;border:0;background:#cbd5e1}
+.markdown-handbook-body table{border:1px solid #94a3b8;border-radius:8px;background:#fff}
+.markdown-handbook-body th{color:#052e2b;background:#ccfbf1}
+
+@media(max-width:760px){
+	.markdown-handbook-cover.handbook-cover{min-height:auto;padding:48px 18px}
+	.markdown-handbook-cover.handbook-cover .handbook-actions{width:100%;flex-direction:column}
+	.markdown-handbook-body{padding:12px 8px}
+	.handbook-study-guide{padding:14px 12px}
+	.handbook-paper-title{padding:18px 12px!important;font-size:22px!important}
+	.handbook-module-title{margin-top:32px!important;padding:15px 12px!important;font-size:22px!important}
+	.handbook-question-title{padding:14px 12px!important;font-size:19px!important}
+	.handbook-part-title{padding:13px 11px!important;font-size:17px!important}
+	.handbook-prompt,.handbook-intuition{padding:13px 11px;font-size:15px!important}
+	.handbook-evaluation-step{padding:14px 10px 14px 48px!important}
+	.handbook-evaluation-step::before{left:10px;top:13px}
+	.handbook-evaluation-step mjx-container[display="true"],
+	.markdown-handbook-body>mjx-container[display="true"],
+	.markdown-handbook-body>p>mjx-container[display="true"]{padding:12px 9px!important;font-size:16px!important}
+	.handbook-final-math mjx-container[display="true"]{padding:16px 8px!important;font-size:18px!important}
+}
+
+@media print{
+	.markdown-handbook-cover.handbook-cover{min-height:250mm}
+	.markdown-handbook-body{padding:0;background:#fff}
+	.handbook-module-title{break-before:page;color:#111827!important;border:2px solid #0f766e!important;background:#ccfbf1}
+	.m2-handbook .handbook-module-title{border-color:#b45309!important;background:#fef3c7}
+	.handbook-question-title,.handbook-part-title,.handbook-prompt,.handbook-intuition,.handbook-evaluation-step,.handbook-study-guide{color:#111827!important;background:#fff;box-shadow:none}
+	.handbook-evaluation-step{padding-left:45px!important}
+	.handbook-final-label{color:#111827!important;background:#99f6e4}
+	.handbook-final-math,.handbook-final-math mjx-container[display="true"]{color:#111827;background:#fff}
+}

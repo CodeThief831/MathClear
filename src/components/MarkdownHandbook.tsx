@@ -1,6 +1,66 @@
 import { useEffect, useMemo, useState } from 'react'
+import { MathJax } from 'better-react-mathjax'
 import { marked } from 'marked'
 import { Download, Printer } from 'lucide-react'
+
+const repairTypography = (value: string) => value
+  .replaceAll('â€”', '—')
+  .replaceAll('â€“', '–')
+  .replaceAll('â€™', '’')
+  .replaceAll('â€œ', '“')
+  .replaceAll('â€', '”')
+  .replaceAll('â€¦', '…')
+  .replaceAll('Â°', '°')
+  .replaceAll('Â', '')
+
+const formatHandbookHtml = (markdown: string) => {
+  const parsed = marked.parse(markdown, { async: false }) as string
+  const document = new DOMParser().parseFromString(`<main>${parsed}</main>`, 'text/html')
+  const root = document.querySelector('main')
+  if (!root) return parsed
+
+  root.querySelectorAll('h1').forEach((heading) => {
+    heading.classList.add(heading.textContent?.trim().startsWith('Module ') ? 'handbook-module-title' : 'handbook-paper-title')
+  })
+  root.querySelectorAll('h2').forEach((heading) => {
+    const text = heading.textContent?.trim() ?? ''
+    if (/^Q\d+\b/i.test(text)) heading.classList.add('handbook-question-title')
+    if (text === 'OR') heading.classList.add('handbook-or-title')
+  })
+  root.querySelectorAll('h3').forEach((heading) => {
+    if (/^Q\d+\([a-c]\)/i.test(heading.textContent?.trim() ?? '')) heading.classList.add('handbook-part-title')
+  })
+  root.querySelectorAll('h4').forEach((heading) => {
+    if (/solution|marking/i.test(heading.textContent ?? '')) heading.classList.add('handbook-solution-title')
+  })
+
+  root.querySelectorAll('p').forEach((paragraph) => {
+    const text = paragraph.textContent?.trim() ?? ''
+    if (text.startsWith('Intuition:')) paragraph.classList.add('handbook-intuition')
+    if (text.startsWith('Prompt:')) paragraph.classList.add('handbook-prompt')
+    if (/^\[?\d+ marks?\]?$/i.test(text.replace(/[()[\]*]/g, '').trim())) paragraph.classList.add('handbook-mark-line')
+    if (text.startsWith('Final answer:')) {
+      paragraph.classList.add('handbook-final-label')
+      paragraph.nextElementSibling?.classList.add('handbook-final-math')
+    }
+    if (text.includes('\\boxed')) paragraph.classList.add('handbook-boxed-result')
+  })
+
+  root.querySelectorAll('strong').forEach((strong) => {
+    if (/^\[?\d+ marks?\]?$/i.test(strong.textContent?.trim() ?? '')) strong.classList.add('handbook-mark-badge')
+  })
+
+  root.querySelectorAll('ol').forEach((list) => {
+    if (list.querySelector('li mjx-container, li .MathJax') || list.previousElementSibling?.classList.contains('handbook-solution-title')) {
+      list.classList.add('handbook-evaluation-steps')
+      list.querySelectorAll(':scope > li').forEach((step) => step.classList.add('handbook-evaluation-step'))
+    }
+  })
+  root.querySelectorAll('blockquote').forEach((quote) => quote.classList.add('handbook-study-guide'))
+  root.querySelectorAll('hr').forEach((rule) => rule.classList.add('handbook-section-rule'))
+
+  return root.innerHTML
+}
 
 const handbookConfig = {
   m1: {
@@ -28,24 +88,17 @@ export function MarkdownHandbook({ kind }: { kind: 'm1' | 'm2' }) {
         if (!response.ok) throw new Error(`Unable to load handbook (${response.status}).`)
         return response.text()
       })
-      .then(setMarkdown)
+      .then((content) => setMarkdown(repairTypography(content)))
       .catch((reason: Error) => setError(reason.message))
   }, [config.markdown])
 
-  const html = useMemo(() => marked.parse(markdown, { async: false }) as string, [markdown])
-
-  useEffect(() => {
-    if (!html) return
-    const mathJax = (window as typeof window & { MathJax?: { typesetPromise?: (elements?: Element[]) => Promise<void> } }).MathJax
-    const root = document.querySelector('.markdown-handbook')
-    if (root && mathJax?.typesetPromise) mathJax.typesetPromise([root]).catch(() => undefined)
-  }, [html])
+  const html = useMemo(() => formatHandbookHtml(markdown), [markdown])
 
   if (error) return <section className="panel"><h2>Handbook unavailable</h2><p>{error}</p></section>
   if (!markdown) return <section className="panel loading-panel">Loading complete handbook…</section>
 
-  return <article className="markdown-handbook">
-    <header className="markdown-handbook-cover">
+  return <article className={`markdown-handbook handbook-mode ${kind}-handbook`}>
+    <header className="markdown-handbook-cover handbook-cover">
       <span>MathClear · VTU 2021 Scheme</span>
       <h1>{config.code} Complete Revision Handbook</h1>
       <h2>{config.title}</h2>
@@ -54,6 +107,8 @@ export function MarkdownHandbook({ kind }: { kind: 'm1' | 'm2' }) {
       <small>Preparation support—not an examination guarantee.</small>
       <div className="handbook-actions no-print"><a href={`${import.meta.env.BASE_URL}${config.pdf}`} download><Download size={18} /> Download PDF</a><button onClick={() => window.print()}><Printer size={18} /> Print handbook</button></div>
     </header>
-    <section className="markdown-handbook-body" dangerouslySetInnerHTML={{ __html: html }} />
+    <MathJax dynamic>
+      <section className="markdown-handbook-body" dangerouslySetInnerHTML={{ __html: html }} />
+    </MathJax>
   </article>
 }

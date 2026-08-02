@@ -3,6 +3,7 @@ import { MathJaxContext } from 'better-react-mathjax'
 import { BookOpenCheck, ChartNoAxesCombined, Flame, GraduationCap, House, Menu, PanelLeftClose, Sigma, X } from 'lucide-react'
 import { CheatSheet } from './components/CheatSheet'
 import { MainDashboard } from './components/MainDashboard'
+import { MarkdownHandbook } from './components/MarkdownHandbook'
 import { M4SurvivalPackage } from './components/M4SurvivalPackage'
 import { StepByStepSolver } from './components/StepByStepSolver'
 import { SurvivalPackage } from './components/SurvivalPackage'
@@ -11,10 +12,12 @@ import './App.css'
 
 const ConceptVisualizer = lazy(() => import('./components/ConceptVisualizer').then((module) => ({ default: module.ConceptVisualizer })))
 
-type View = 'dashboard' | 'survival' | 'm4-survival' | 'visualizer' | 'solver' | 'cheatsheet'
+type View = 'dashboard' | 'm1-handbook' | 'm2-handbook' | 'survival' | 'm4-survival' | 'visualizer' | 'solver' | 'cheatsheet'
 
 const navigation: { id: View; label: string; icon: typeof House }[] = [
   { id: 'dashboard', label: 'Dashboard', icon: House },
+  { id: 'm1-handbook', label: 'M1 · 21MAT11 Tomorrow', icon: Flame },
+  { id: 'm2-handbook', label: 'M2 · 21MAT21 Next', icon: Flame },
   { id: 'survival', label: '21MAT31 · VTU Practice', icon: Flame },
   { id: 'm4-survival', label: '21MATCS41 · VTU Practice', icon: Flame },
   { id: 'visualizer', label: 'Visual concepts', icon: ChartNoAxesCombined },
@@ -24,8 +27,10 @@ const navigation: { id: View; label: string; icon: typeof House }[] = [
 
 function App() {
   const initialHandbook = new URLSearchParams(window.location.search).get('handbook')
-  const [view, setView] = useState<View>(initialHandbook === 'm4' ? 'm4-survival' : 'dashboard')
-  const [subject, setSubject] = useState<SubjectCode>(initialHandbook === 'm4' ? '21MATCS41' : '21MAT31')
+  const initialView: View = initialHandbook === 'm1' ? 'm1-handbook' : initialHandbook === 'm2' ? 'm2-handbook' : initialHandbook === 'm4' ? 'm4-survival' : 'dashboard'
+  const initialSubject: SubjectCode = initialHandbook === 'm1' ? '21MAT11' : initialHandbook === 'm2' ? '21MAT21' : initialHandbook === 'm4' ? '21MATCS41' : '21MAT31'
+  const [view, setView] = useState<View>(initialView)
+  const [subject, setSubject] = useState<SubjectCode>(initialSubject)
   const [menuOpen, setMenuOpen] = useState(false)
   const current = subjects.find((item) => item.code === subject) ?? subjects[2]
 
@@ -36,7 +41,7 @@ function App() {
   }
 
   return (
-    <MathJaxContext config={{ tex: { inlineMath: [['\\(', '\\)']] } }}>
+    <MathJaxContext config={{ tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] } }}>
       <div className="app-shell">
         <aside className={`sidebar ${menuOpen ? 'open' : ''}`}>
           <div className="brand"><div><GraduationCap size={23} /></div><span><strong>Math<span>Clear</span></strong><small>VTU 2021 · CSE</small></span><button onClick={() => setMenuOpen(false)} aria-label="Close menu"><X /></button></div>
@@ -57,6 +62,8 @@ function App() {
           </header>
           <div className="content">
             {view === 'dashboard' && <MainDashboard subject={subject} onSubjectChange={setSubject} onNavigate={navigate} />}
+            {view === 'm1-handbook' && <MarkdownHandbook kind="m1" />}
+            {view === 'm2-handbook' && <MarkdownHandbook kind="m2" />}
             {view === 'survival' && <SurvivalPackage />}
             {view === 'm4-survival' && <M4SurvivalPackage />}
             {view === 'visualizer' && <Suspense fallback={<div className="panel loading-panel">Loading interactive graph…</div>}><ConceptVisualizer /></Suspense>}

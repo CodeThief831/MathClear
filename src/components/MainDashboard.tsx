@@ -27,6 +27,16 @@ export function MainDashboard({ subject, onSubjectChange, onNavigate }: { subjec
         </div>
       </section>
 
+      <section className="survival-banner m1-banner">
+        <div><span><Flame size={16} /> TOMORROW EXAM · VTU 2021</span><h2>21MAT11 M1 complete preparation handbook</h2><p>Five modules, both OR choices, full stepwise solutions, formula glossary and plain-English explanations.</p></div>
+        <div className="banner-actions"><button className="primary-button" onClick={() => onNavigate('m1-handbook')}>Open M1 handbook <ArrowRight size={18} /></button><a className="secondary-button" href={`${import.meta.env.BASE_URL}MathClear_21MAT11_Complete_Revision_Handbook.pdf`} download>Download PDF</a></div>
+      </section>
+
+      <section className="survival-banner m2-banner">
+        <div><span><Flame size={16} /> NEXT EXAM · VTU 2021</span><h2>21MAT21 M2 complete preparation handbook</h2><p>Integral calculus, vector calculus, PDE, numerical methods and ODE methods with full solutions.</p></div>
+        <div className="banner-actions"><button className="primary-button" onClick={() => onNavigate('m2-handbook')}>Open M2 handbook <ArrowRight size={18} /></button><a className="secondary-button" href={`${import.meta.env.BASE_URL}MathClear_21MAT21_Complete_Revision_Handbook.pdf`} download>Download PDF</a></div>
+      </section>
+
       <section className="survival-banner">
         <div><span><Flame size={16} /> VTU 2021 SCHEME</span><h2>21MAT31 VTU-aligned practice paper</h2><p>A 100-mark paper following the official VTU module/OR structure, with {paperPartCount} solved parts in formula–substitution–working–answer order.</p></div>
         <button className="primary-button" onClick={() => onNavigate('survival')}>Open VTU practice <ArrowRight size={18} /></button>

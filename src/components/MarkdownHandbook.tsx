@@ -13,11 +13,60 @@ const repairTypography = (value: string) => value
   .replaceAll('Â°', '°')
   .replaceAll('Â', '')
 
+const extractDisplayMath = (value: string) => {
+  const blocks: string[] = []
+  const reserve = (indentation: string, math: string) => {
+    const token = `MATHCLEARDISPLAY${blocks.length}TOKEN`
+    blocks.push(math.trim())
+    return `${indentation}${token}`
+  }
+  const bracketProtected = value.replace(
+    /^([\t ]*)\\\[[\t ]*\r?\n([\s\S]*?)^[\t ]*\\\][\t ]*$/gm,
+    (_match, indentation: string, math: string) => reserve(indentation, math),
+  )
+  const source = bracketProtected.replace(
+    /^([\t ]*)\$\$[\t ]*\r?\n([\s\S]*?)^[\t ]*\$\$[\t ]*$/gm,
+    (_match, indentation: string, math: string) => reserve(indentation, math),
+  )
+  return { source, blocks }
+}
+
+const restoreDisplayMath = (root: Element, blocks: string[]) => {
+  if (!blocks.length) return
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
+  const textNodes: Text[] = []
+  let node = walker.nextNode()
+  while (node) {
+    textNodes.push(node as Text)
+    node = walker.nextNode()
+  }
+
+  textNodes.forEach((textNode) => {
+    const value = textNode.data
+    const matches = [...value.matchAll(/MATHCLEARDISPLAY(\d+)TOKEN/g)]
+    if (!matches.length || !textNode.parentNode) return
+    const fragment = document.createDocumentFragment()
+    let cursor = 0
+    matches.forEach((match) => {
+      if (match.index! > cursor) fragment.append(value.slice(cursor, match.index))
+      const math = document.createElement('div')
+      math.className = 'handbook-display-math'
+      math.textContent = `\\[${blocks[Number(match[1])]}\\]`
+      fragment.append(math)
+      cursor = match.index! + match[0].length
+    })
+    if (cursor < value.length) fragment.append(value.slice(cursor))
+    textNode.parentNode.replaceChild(fragment, textNode)
+  })
+}
+
 const formatHandbookHtml = (markdown: string) => {
-  const parsed = marked.parse(markdown, { async: false }) as string
+  const { source, blocks } = extractDisplayMath(markdown)
+  const parsed = marked.parse(source, { async: false }) as string
   const document = new DOMParser().parseFromString(`<main>${parsed}</main>`, 'text/html')
   const root = document.querySelector('main')
   if (!root) return parsed
+  restoreDisplayMath(root, blocks)
 
   root.querySelectorAll('h1').forEach((heading) => {
     heading.classList.add(heading.textContent?.trim().startsWith('Module ') ? 'handbook-module-title' : 'handbook-paper-title')

@@ -105,6 +105,8 @@ main{margin-left:250px;min-height:100vh}.topbar{height:74px;padding:0 clamp(22px
 .markdown-handbook-body>span{display:block;min-width:0;max-width:100%;overflow:hidden}
 .markdown-handbook-body p{min-width:0;max-width:100%}
 .markdown-handbook-body mjx-container[display="true"]{width:100%!important;min-width:0!important;max-width:100%!important}
+.handbook-display-math{width:100%;min-width:0;max-width:100%;margin:12px 0;overflow-x:auto;overflow-y:hidden;color:#111827;border:1px solid #cbd5e1;border-radius:9px;background:#fff;-webkit-overflow-scrolling:touch}
+.handbook-display-math mjx-container[display="true"]{margin:0!important;padding:14px 16px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
 .markdown-handbook-body>.handbook-study-guide:first-child{margin-top:0}
 .handbook-study-guide{margin:18px 0;padding:18px 20px;border:1px solid #99f6e4;border-left:5px solid #14b8a6;border-radius:10px;background:#ecfdf5;color:#134e4a}
 .handbook-study-guide p{margin:7px 0!important;color:#134e4a}

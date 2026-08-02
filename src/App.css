@@ -105,7 +105,9 @@ main{margin-left:250px;min-height:100vh}.topbar{height:74px;padding:0 clamp(22px
 .markdown-handbook-body>span{display:block;min-width:0;max-width:100%;overflow:hidden}
 .markdown-handbook-body p{min-width:0;max-width:100%}
 .markdown-handbook-body mjx-container[display="true"]{width:100%!important;min-width:0!important;max-width:100%!important}
-.handbook-display-math{width:100%;min-width:0;max-width:100%;margin:12px 0;overflow-x:auto;overflow-y:hidden;color:#111827;border:1px solid #cbd5e1;border-radius:9px;background:#fff;-webkit-overflow-scrolling:touch}
+.handbook-display-math{width:100%;min-width:0;max-width:100%;margin:12px 0;overflow-x:auto;overflow-y:hidden;color:#111827;border:1px solid #cbd5e1;border-radius:9px;background:#fff;cursor:zoom-in;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;-webkit-overflow-scrolling:touch}
+.handbook-display-math::after{content:'Click to enlarge';position:sticky;left:100%;width:max-content;margin:0 8px 7px auto;padding:4px 7px;display:block;color:#475569;border-radius:5px;background:#f1f5f9;font:700 10px 'DM Sans','Segoe UI',sans-serif;letter-spacing:.4px;text-transform:uppercase}
+.handbook-display-math:hover,.handbook-display-math:focus-visible{z-index:2;transform:scale(1.015);border-color:#2dd4bf;box-shadow:0 10px 24px rgba(2,6,23,.16);outline:2px solid #2dd4bf;outline-offset:2px}
 .handbook-display-math mjx-container[display="true"]{margin:0!important;padding:14px 16px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
 .markdown-handbook-body>.handbook-study-guide:first-child{margin-top:0}
 .handbook-study-guide{margin:18px 0;padding:18px 20px;border:1px solid #99f6e4;border-left:5px solid #14b8a6;border-radius:10px;background:#ecfdf5;color:#134e4a}
@@ -139,6 +141,13 @@ main{margin-left:250px;min-height:100vh}.topbar{height:74px;padding:0 clamp(22px
 .handbook-section-rule{height:1px;margin:28px 0;border:0;background:#cbd5e1}
 .markdown-handbook-body table{border:1px solid #94a3b8;border-radius:8px;background:#fff}
 .markdown-handbook-body th{color:#052e2b;background:#ccfbf1}
+.handbook-analysis{margin:18px 0}
+.handbook-practice-mode .handbook-solution-content{display:none!important}
+.handbook-practice-mode .handbook-solution-title{display:block!important;margin-bottom:18px!important;color:#475569!important;border-style:dashed;background:#f8fafc}
+.handbook-practice-mode .handbook-solution-title::after{content:' — hidden for closed-book practice';color:#b45309;font-size:12px;text-transform:none;letter-spacing:0}
+.mathjax-zoom-content{display:flex;align-items:center;justify-content:center;min-height:180px}
+.mathjax-zoom-content mjx-container[display="true"]{width:max-content!important;min-width:max-content!important;max-width:none!important;margin:0!important;overflow:visible!important;font-size:clamp(1.3rem,3.5vw,2.6rem)!important}
+.formula-zoom-dialog>p{display:flex;align-items:center;justify-content:center;gap:6px}
 
 @media(max-width:760px){
 	.markdown-handbook-cover.handbook-cover{min-height:auto;padding:48px 18px}
@@ -156,6 +165,10 @@ main{margin-left:250px;min-height:100vh}.topbar{height:74px;padding:0 clamp(22px
 	.markdown-handbook-body>mjx-container[display="true"],
 	.markdown-handbook-body>p>mjx-container[display="true"]{padding:12px 9px!important;font-size:16px!important}
 	.handbook-final-math mjx-container[display="true"]{padding:16px 8px!important;font-size:18px!important}
+	.handbook-display-math::after{font-size:9px}
+	.handbook-display-math:hover{transform:none}
+	.mathjax-zoom-content{justify-content:flex-start;min-height:140px}
+	.mathjax-zoom-content mjx-container[display="true"]{font-size:1.45rem!important}
 }
 
 @media print{
@@ -167,4 +180,6 @@ main{margin-left:250px;min-height:100vh}.topbar{height:74px;padding:0 clamp(22px
 	.handbook-evaluation-step{padding-left:45px!important}
 	.handbook-final-label{color:#111827!important;background:#99f6e4}
 	.handbook-final-math,.handbook-final-math mjx-container[display="true"]{color:#111827;background:#fff}
+	.handbook-display-math::after{display:none}
+	.handbook-practice-mode .handbook-solution-content{display:block!important}
 }

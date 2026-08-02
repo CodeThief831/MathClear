@@ -25,10 +25,24 @@ const navigation: { id: View; label: string; icon: typeof House }[] = [
   { id: 'cheatsheet', label: 'Cheat sheet', icon: Sigma },
 ]
 
+const subjectViews: Record<SubjectCode, View> = {
+  '21MAT11': 'm1-handbook',
+  '21MAT21': 'm2-handbook',
+  '21MAT31': 'survival',
+  '21MATCS41': 'm4-survival',
+}
+
+const handbookQuery: Partial<Record<View, string>> = {
+  'm1-handbook': 'm1',
+  'm2-handbook': 'm2',
+}
+
 function App() {
-  const initialHandbook = new URLSearchParams(window.location.search).get('handbook')
-  const initialView: View = initialHandbook === 'm1' ? 'm1-handbook' : initialHandbook === 'm2' ? 'm2-handbook' : initialHandbook === 'm4' ? 'm4-survival' : 'dashboard'
-  const initialSubject: SubjectCode = initialHandbook === 'm1' ? '21MAT11' : initialHandbook === 'm2' ? '21MAT21' : initialHandbook === 'm4' ? '21MATCS41' : '21MAT31'
+  const initialParams = new URLSearchParams(window.location.search)
+  const initialHandbook = initialParams.get('handbook')
+  const initialPractice = initialParams.get('view')
+  const initialView: View = initialHandbook === 'm1' ? 'm1-handbook' : initialHandbook === 'm2' ? 'm2-handbook' : initialHandbook === 'm4' || initialPractice === 'm4' ? 'm4-survival' : initialPractice === 'm3' ? 'survival' : 'dashboard'
+  const initialSubject: SubjectCode = initialHandbook === 'm1' ? '21MAT11' : initialHandbook === 'm2' ? '21MAT21' : initialHandbook === 'm4' || initialPractice === 'm4' ? '21MATCS41' : '21MAT31'
   const [view, setView] = useState<View>(initialView)
   const [subject, setSubject] = useState<SubjectCode>(initialSubject)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -41,8 +55,21 @@ function App() {
     if (nextView === 'survival') setSubject('21MAT31')
     if (nextView === 'm4-survival') setSubject('21MATCS41')
     setView(nextView)
+    const url = new URL(window.location.href)
+    const handbook = handbookQuery[nextView]
+    if (handbook) url.searchParams.set('handbook', handbook)
+    else url.searchParams.delete('handbook')
+    if (nextView === 'survival') url.searchParams.set('view', 'm3')
+    else if (nextView === 'm4-survival') url.searchParams.set('view', 'm4')
+    else url.searchParams.delete('view')
+    window.history.pushState({}, '', url)
     setMenuOpen(false)
     window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const changeSubject = (nextSubject: SubjectCode) => {
+    setSubject(nextSubject)
+    if (Object.values(subjectViews).includes(view)) navigate(subjectViews[nextSubject])
   }
 
   return (
@@ -63,7 +90,7 @@ function App() {
           <header className="topbar">
             <button className="mobile-menu" onClick={() => setMenuOpen(true)} aria-label="Open menu"><Menu /></button>
             <div><span>{view === 'dashboard' ? 'Good to see you again' : navigation.find((item) => item.id === view)?.label}</span><strong>{view === 'dashboard' ? 'Ready for one small win?' : current.code}</strong></div>
-            <label className="subject-select"><span>Active paper</span><select value={subject} onChange={(event) => setSubject(event.target.value as SubjectCode)}>{subjects.map((item) => <option value={item.code} key={item.code}>{item.code}</option>)}</select></label>
+            <label className="subject-select"><span>Active paper</span><select value={subject} onChange={(event) => changeSubject(event.target.value as SubjectCode)}>{subjects.map((item) => <option value={item.code} key={item.code}>{item.code}</option>)}</select></label>
           </header>
           <div className="content">
             {view === 'dashboard' && <MainDashboard subject={subject} onSubjectChange={setSubject} onNavigate={navigate} />}

@@ -1,7 +1,10 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { MathJax } from 'better-react-mathjax'
 import { marked } from 'marked'
-import { Download, Printer } from 'lucide-react'
+import { AlertTriangle, BookOpenCheck, Download, Eye, EyeOff, Maximize2, Printer, X } from 'lucide-react'
+
+type HandbookMode = 'paper' | 'solutions'
 
 const repairTypography = (value: string) => value
   .replaceAll('â€”', '—')
@@ -51,6 +54,9 @@ const restoreDisplayMath = (root: Element, blocks: string[]) => {
       if (match.index! > cursor) fragment.append(value.slice(cursor, match.index))
       const math = document.createElement('div')
       math.className = 'handbook-display-math'
+      math.setAttribute('role', 'button')
+      math.setAttribute('tabindex', '0')
+      math.setAttribute('aria-label', 'Enlarge this formula')
       math.textContent = `\\[${blocks[Number(match[1])]}\\]`
       fragment.append(math)
       cursor = match.index! + match[0].length
@@ -81,6 +87,19 @@ const formatHandbookHtml = (markdown: string) => {
   })
   root.querySelectorAll('h4').forEach((heading) => {
     if (/solution|marking/i.test(heading.textContent ?? '')) heading.classList.add('handbook-solution-title')
+  })
+
+  root.querySelectorAll('.handbook-solution-title').forEach((heading) => {
+    const answerOrder = document.createElement('div')
+    answerOrder.className = 'vtu-answer-order handbook-solution-content'
+    answerOrder.innerHTML = '<b>VTU answer order</b><span>1. Given / definition</span><span>2. Formula / theorem</span><span>3. Substitution</span><span>4. Stepwise working</span><span>5. Boxed answer</span>'
+    heading.insertAdjacentElement('afterend', answerOrder)
+    heading.classList.add('handbook-solution-content')
+    let sibling = answerOrder.nextElementSibling
+    while (sibling && !sibling.matches('h1, h2, h3, hr')) {
+      sibling.classList.add('handbook-solution-content')
+      sibling = sibling.nextElementSibling
+    }
   })
 
   root.querySelectorAll('p').forEach((paragraph) => {
@@ -130,6 +149,9 @@ export function MarkdownHandbook({ kind }: { kind: 'm1' | 'm2' }) {
   const config = handbookConfig[kind]
   const [markdown, setMarkdown] = useState('')
   const [error, setError] = useState('')
+  const [mode, setMode] = useState<HandbookMode>('solutions')
+  const [zoomedFormula, setZoomedFormula] = useState('')
+  const handbookBody = useRef<HTMLElement>(null)
 
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}${config.markdown}`)
@@ -143,10 +165,47 @@ export function MarkdownHandbook({ kind }: { kind: 'm1' | 'm2' }) {
 
   const html = useMemo(() => formatHandbookHtml(markdown), [markdown])
 
+  useEffect(() => {
+    if (!zoomedFormula) return
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setZoomedFormula('')
+    }
+    document.body.classList.add('formula-zoom-open')
+    window.addEventListener('keydown', closeOnEscape)
+    return () => {
+      document.body.classList.remove('formula-zoom-open')
+      window.removeEventListener('keydown', closeOnEscape)
+    }
+  }, [zoomedFormula])
+
+  const openFormula = (target: EventTarget | null) => {
+    const formula = target instanceof Element ? target.closest<HTMLElement>('.handbook-display-math') : null
+    if (formula) setZoomedFormula(formula.innerHTML)
+  }
+
+  useEffect(() => {
+    const body = handbookBody.current
+    if (!body) return
+    const activateFormula = (event: Event) => openFormula(event.target)
+    const activateFormulaByKeyboard = (event: KeyboardEvent) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return
+      const formula = event.target instanceof Element ? event.target.closest('.handbook-display-math') : null
+      if (!formula) return
+      event.preventDefault()
+      openFormula(formula)
+    }
+    body.addEventListener('click', activateFormula, true)
+    body.addEventListener('keydown', activateFormulaByKeyboard, true)
+    return () => {
+      body.removeEventListener('click', activateFormula, true)
+      body.removeEventListener('keydown', activateFormulaByKeyboard, true)
+    }
+  }, [html])
+
   if (error) return <section className="panel"><h2>Handbook unavailable</h2><p>{error}</p></section>
   if (!markdown) return <section className="panel loading-panel">Loading complete handbook…</section>
 
-  return <article className={`markdown-handbook handbook-mode ${kind}-handbook`}>
+  return <article className={`markdown-handbook handbook-mode ${kind}-handbook ${mode === 'paper' ? 'handbook-practice-mode' : ''}`}>
     <header className="markdown-handbook-cover handbook-cover">
       <span>MathClear · VTU 2021 Scheme</span>
       <h1>{config.code} Complete Revision Handbook</h1>
@@ -156,8 +215,28 @@ export function MarkdownHandbook({ kind }: { kind: 'm1' | 'm2' }) {
       <small>Preparation support—not an examination guarantee.</small>
       <div className="handbook-actions no-print"><a href={`${import.meta.env.BASE_URL}${config.pdf}`} download><Download size={18} /> Download PDF</a><button onClick={() => window.print()}><Printer size={18} /> Print handbook</button></div>
     </header>
+    <section className="reality-card"><AlertTriangle size={22} /><div><strong>Backlog-focused VTU preparation—not a pass guarantee</strong><p>Coverage follows the VTU 2021 Scheme and recurring paper patterns. For reliable preparation, write one complete 20-mark choice from every module without looking, then correct every missed step.</p></div></section>
+    <section className="analysis-strip handbook-analysis"><article><strong>5</strong><span>complete modules</span></article><article><strong>10</strong><span>full questions</span></article><article><strong>30</strong><span>solved parts</span></article><article><strong>100</strong><span>mark mock structure</span></article></section>
+    <section className="panel mock-controls no-print">
+      <div><span className="eyebrow"><Eye size={14} /> Display mode</span><h2>{mode === 'paper' ? 'Closed-book practice mode' : 'VTU-style solution mode'}</h2><p>{mode === 'paper' ? 'Questions and intuition remain visible; formal solutions are hidden until you switch back.' : 'Every answer uses formula, substitution, stepwise working, marks and a boxed result.'}</p></div>
+      <div className="mock-action-row"><button className={mode === 'paper' ? 'active' : ''} onClick={() => setMode('paper')}><EyeOff size={17} /> Practice paper</button><button className={mode === 'solutions' ? 'active' : ''} onClick={() => setMode('solutions')}><BookOpenCheck size={17} /> Solutions</button><button onClick={() => window.print()}><Printer size={17} /> Print</button></div>
+    </section>
     <MathJax dynamic>
-      <section className="markdown-handbook-body" dangerouslySetInnerHTML={{ __html: html }} />
+      <section
+        ref={handbookBody}
+        className="markdown-handbook-body"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
     </MathJax>
+    {zoomedFormula && createPortal(
+      <div className="formula-zoom-overlay" role="dialog" aria-modal="true" aria-label="Enlarged formula" onClick={() => setZoomedFormula('')}>
+        <div className="formula-zoom-dialog" onClick={(event) => event.stopPropagation()}>
+          <div className="formula-zoom-header"><strong>Formula — enlarged textbook view</strong><button type="button" onClick={() => setZoomedFormula('')} aria-label="Close enlarged formula"><X size={23} /></button></div>
+          <div className="formula-zoom-content mathjax-zoom-content" dangerouslySetInnerHTML={{ __html: zoomedFormula }} />
+          <p><Maximize2 size={13} /> Press Esc, click outside, or use the close button to return.</p>
+        </div>
+      </div>,
+      document.body,
+    )}
   </article>
 }

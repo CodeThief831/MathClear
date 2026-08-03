@@ -6,6 +6,12 @@ import { m4PartCount } from '../data/m4MockPaper'
 export function MainDashboard({ subject, onSubjectChange, onNavigate }: { subject: SubjectCode; onSubjectChange: (code: SubjectCode) => void; onNavigate: (view: string) => void }) {
   const current = subjects.find((item) => item.code === subject) ?? subjects[2]
   const focusModules = current.modules.filter((item) => item.priority === 'High')
+  const focusViews: Record<SubjectCode, string> = { '21MAT11': 'm1-handbook', '21MAT21': 'm2-handbook', '21MAT31': 'survival', '21MATCS41': 'm4-survival' }
+  const focusLabels: Record<SubjectCode, string> = { '21MAT11': 'Focus on M1', '21MAT21': 'Focus on M2', '21MAT31': 'Focus on M3', '21MATCS41': 'Focus on M4' }
+  const focusCourse = (code: SubjectCode) => {
+    onSubjectChange(code)
+    onNavigate(focusViews[code])
+  }
 
   return (
     <div className="dashboard-stack">
@@ -50,8 +56,8 @@ export function MainDashboard({ subject, onSubjectChange, onNavigate }: { subjec
       <section>
         <div className="section-heading inline-heading"><div><span className="eyebrow">Your four papers</span><h2>Choose today’s focus</h2></div><span className="quiet-label">21 Scheme only</span></div>
         <div className="subject-grid">
-          {subjects.map((item) => <button key={item.code} className={`subject-card ${subject === item.code ? 'selected' : ''}`} style={{ '--subject-accent': item.accent } as React.CSSProperties} onClick={() => onSubjectChange(item.code)}>
-            <span>{item.semester}</span><strong>{item.code}</strong><p>{item.title}</p><div><i style={{ width: `${item.confidence}%` }} /><small>{item.confidence}% confidence</small></div>
+          {subjects.map((item) => <button key={item.code} className={`subject-card focus-subject-card ${subject === item.code ? 'selected' : ''}`} style={{ '--subject-accent': item.accent } as React.CSSProperties} onClick={() => focusCourse(item.code)}>
+            <span>{item.semester}</span><strong>{item.code}</strong><p>{item.title}</p><div><i style={{ width: `${item.confidence}%` }} /><small>{item.confidence}% confidence</small></div><b>{focusLabels[item.code]} <ArrowRight size={15} /></b>
           </button>)}
         </div>
       </section>

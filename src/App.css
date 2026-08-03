@@ -109,6 +109,10 @@ main{margin-left:250px;min-height:100vh}.topbar{height:74px;padding:0 clamp(22px
 .handbook-display-math::after{content:'Click to enlarge';position:sticky;left:100%;width:max-content;margin:0 8px 7px auto;padding:4px 7px;display:block;color:#475569;border-radius:5px;background:#f1f5f9;font:700 10px 'DM Sans','Segoe UI',sans-serif;letter-spacing:.4px;text-transform:uppercase}
 .handbook-display-math:hover,.handbook-display-math:focus-visible{z-index:2;transform:scale(1.015);border-color:#2dd4bf;box-shadow:0 10px 24px rgba(2,6,23,.16);outline:2px solid #2dd4bf;outline-offset:2px}
 .handbook-display-math mjx-container[display="true"]{margin:0!important;padding:14px 16px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+.handbook-display-math .katex-display{width:max-content;min-width:100%;margin:0;padding:14px 16px;text-align:center}
+.handbook-display-math .katex-display>.katex{display:inline-block;min-width:max-content;white-space:nowrap}
+.handbook-inline-math{display:inline-block;max-width:100%;vertical-align:-.15em;color:inherit}
+.handbook-inline-math .katex{font-size:1.04em}
 .markdown-handbook-body>.handbook-study-guide:first-child{margin-top:0}
 .handbook-study-guide{margin:18px 0;padding:18px 20px;border:1px solid #99f6e4;border-left:5px solid #14b8a6;border-radius:10px;background:#ecfdf5;color:#134e4a}
 .handbook-study-guide p{margin:7px 0!important;color:#134e4a}
@@ -135,6 +139,7 @@ main{margin-left:250px;min-height:100vh}.topbar{height:74px;padding:0 clamp(22px
 .handbook-mark-line{width:max-content;margin:10px 0 0 auto!important;padding:5px 9px;color:#78350f!important;border:1px solid #fbbf24;border-radius:999px;background:#fef3c7;font-size:12px!important;font-weight:800;white-space:nowrap}
 .handbook-mark-badge{width:max-content;margin:10px 0 0 auto;padding:5px 9px;display:block;color:#78350f;border:1px solid #fbbf24;border-radius:999px;background:#fef3c7;font-size:12px;font-weight:800;white-space:nowrap}
 .handbook-boxed-result mjx-container[display="true"]{border:2px solid #2dd4bf!important;background:#f0fdfa!important;font-size:20px!important;font-weight:700}
+.handbook-display-math.handbook-boxed-result{border:2px solid #2dd4bf;background:#f0fdfa;font-size:18px;font-weight:700}
 .handbook-final-label{margin:20px 0 0!important;padding:10px 14px;color:#052e2b!important;border:2px solid #2dd4bf;border-bottom:0;border-radius:12px 12px 0 0;background:#5eead4;font-size:12px!important;font-weight:900;letter-spacing:.7px;text-transform:uppercase}
 .handbook-final-math{margin:0 0 22px!important;padding:3px 14px 14px;border:2px solid #2dd4bf;border-top:0;border-radius:0 0 12px 12px;background:#f0fdfa}
 .handbook-final-math mjx-container[display="true"]{margin:0!important;padding:18px!important;color:#052e2b;border:0;background:#f0fdfa;font-size:21px!important;font-weight:700}
@@ -147,7 +152,15 @@ main{margin-left:250px;min-height:100vh}.topbar{height:74px;padding:0 clamp(22px
 .handbook-practice-mode .handbook-solution-title::after{content:' — hidden for closed-book practice';color:#b45309;font-size:12px;text-transform:none;letter-spacing:0}
 .mathjax-zoom-content{display:flex;align-items:center;justify-content:center;min-height:180px}
 .mathjax-zoom-content mjx-container[display="true"]{width:max-content!important;min-width:max-content!important;max-width:none!important;margin:0!important;overflow:visible!important;font-size:clamp(1.3rem,3.5vw,2.6rem)!important}
+.handbook-katex-zoom{display:flex;align-items:center;justify-content:center;min-height:180px;overflow:auto}
+.handbook-katex-zoom .katex-display{width:max-content;min-width:max-content;margin:0;font-size:clamp(1.3rem,3.5vw,2.6rem)}
+.handbook-katex-zoom .katex-display>.katex{white-space:nowrap}
 .formula-zoom-dialog>p{display:flex;align-items:center;justify-content:center;gap:6px}
+.focus-subject-card{display:flex;flex-direction:column}
+.focus-subject-card>div{width:100%}
+.focus-subject-card>b{margin-top:14px;display:flex;align-items:center;gap:6px;color:var(--subject-accent);font-size:12px}
+.markdown-handbook,.markdown-handbook-body,.paper-sheet,.paper-module,.full-question,.evaluation-scheme,.scheme-row>span{min-width:0;max-width:100%}
+.markdown-handbook-body img{max-width:100%;height:auto}
 
 @media(max-width:760px){
 	.markdown-handbook-cover.handbook-cover{min-height:auto;padding:48px 18px}
@@ -169,6 +182,9 @@ main{margin-left:250px;min-height:100vh}.topbar{height:74px;padding:0 clamp(22px
 	.handbook-display-math:hover{transform:none}
 	.mathjax-zoom-content{justify-content:flex-start;min-height:140px}
 	.mathjax-zoom-content mjx-container[display="true"]{font-size:1.45rem!important}
+	.handbook-katex-zoom{justify-content:flex-start;min-height:140px}
+	.handbook-katex-zoom .katex-display{font-size:1.35rem}
+	.focus-subject-card{min-height:185px}
 }
 
 @media print{

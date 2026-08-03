@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { MathJax } from 'better-react-mathjax'
 import { marked } from 'marked'
 import { AlertTriangle, BookOpenCheck, Download, Eye, EyeOff, Maximize2, Printer, X } from 'lucide-react'
+import katex from 'katex'
+import 'katex/dist/katex.min.css'
 
 type HandbookMode = 'paper' | 'solutions'
 
@@ -16,25 +17,43 @@ const repairTypography = (value: string) => value
   .replaceAll('Â°', '°')
   .replaceAll('Â', '')
 
-const extractDisplayMath = (value: string) => {
-  const blocks: string[] = []
-  const reserve = (indentation: string, math: string) => {
-    const token = `MATHCLEARDISPLAY${blocks.length}TOKEN`
-    blocks.push(math.trim())
+type MathToken = { tex: string; display: boolean }
+
+const extractMath = (value: string) => {
+  const blocks: MathToken[] = []
+  const reserve = (indentation: string, math: string, display: boolean) => {
+    const token = `MATHCLEARMATH${blocks.length}TOKEN`
+    blocks.push({ tex: math.trim(), display })
     return `${indentation}${token}`
   }
   const bracketProtected = value.replace(
     /^([\t ]*)\\\[[\t ]*\r?\n([\s\S]*?)^[\t ]*\\\][\t ]*$/gm,
-    (_match, indentation: string, math: string) => reserve(indentation, math),
+    (_match, indentation: string, math: string) => reserve(indentation, math, true),
   )
-  const source = bracketProtected.replace(
+  const multilineProtected = bracketProtected.replace(
     /^([\t ]*)\$\$[\t ]*\r?\n([\s\S]*?)^[\t ]*\$\$[\t ]*$/gm,
-    (_match, indentation: string, math: string) => reserve(indentation, math),
+    (_match, indentation: string, math: string) => reserve(indentation, math, true),
   )
+  const displayProtected = multilineProtected.replace(/\$\$([^\n]+?)\$\$/g, (_match, math: string) => reserve('', math, true))
+  const source = displayProtected.replace(/(?<!\\)\$([^$\n]+?)(?<!\\)\$/g, (_match, math: string) => reserve('', math, false))
   return { source, blocks }
 }
 
-const restoreDisplayMath = (root: Element, blocks: string[]) => {
+const renderKatex = (tex: string, displayMode: boolean) => {
+  try {
+    return katex.renderToString(tex, {
+      displayMode,
+      output: 'htmlAndMathml',
+      strict: false,
+      throwOnError: true,
+      trust: false,
+    })
+  } catch {
+    return `<code class="math-fallback">${tex.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')}</code>`
+  }
+}
+
+const restoreMath = (root: Element, blocks: MathToken[]) => {
   if (!blocks.length) return
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
   const textNodes: Text[] = []
@@ -46,18 +65,23 @@ const restoreDisplayMath = (root: Element, blocks: string[]) => {
 
   textNodes.forEach((textNode) => {
     const value = textNode.data
-    const matches = [...value.matchAll(/MATHCLEARDISPLAY(\d+)TOKEN/g)]
+    const matches = [...value.matchAll(/MATHCLEARMATH(\d+)TOKEN/g)]
     if (!matches.length || !textNode.parentNode) return
     const fragment = document.createDocumentFragment()
     let cursor = 0
     matches.forEach((match) => {
       if (match.index! > cursor) fragment.append(value.slice(cursor, match.index))
-      const math = document.createElement('div')
-      math.className = 'handbook-display-math'
-      math.setAttribute('role', 'button')
-      math.setAttribute('tabindex', '0')
-      math.setAttribute('aria-label', 'Enlarge this formula')
-      math.textContent = `\\[${blocks[Number(match[1])]}\\]`
+      const block = blocks[Number(match[1])]
+      const math = document.createElement(block.display ? 'div' : 'span')
+      math.className = block.display ? 'handbook-display-math' : 'handbook-inline-math'
+      math.dataset.tex = block.tex
+      math.innerHTML = renderKatex(block.tex, block.display)
+      if (block.display) {
+        math.setAttribute('role', 'button')
+        math.setAttribute('tabindex', '0')
+        math.setAttribute('aria-label', 'Enlarge this formula')
+        if (block.tex.includes('\\boxed')) math.classList.add('handbook-boxed-result')
+      }
       fragment.append(math)
       cursor = match.index! + match[0].length
     })
@@ -67,12 +91,12 @@ const restoreDisplayMath = (root: Element, blocks: string[]) => {
 }
 
 const formatHandbookHtml = (markdown: string) => {
-  const { source, blocks } = extractDisplayMath(markdown)
+  const { source, blocks } = extractMath(markdown)
   const parsed = marked.parse(source, { async: false }) as string
   const document = new DOMParser().parseFromString(`<main>${parsed}</main>`, 'text/html')
   const root = document.querySelector('main')
   if (!root) return parsed
-  restoreDisplayMath(root, blocks)
+  restoreMath(root, blocks)
 
   root.querySelectorAll('h1').forEach((heading) => {
     heading.classList.add(heading.textContent?.trim().startsWith('Module ') ? 'handbook-module-title' : 'handbook-paper-title')
@@ -111,7 +135,6 @@ const formatHandbookHtml = (markdown: string) => {
       paragraph.classList.add('handbook-final-label')
       paragraph.nextElementSibling?.classList.add('handbook-final-math')
     }
-    if (text.includes('\\boxed')) paragraph.classList.add('handbook-boxed-result')
   })
 
   root.querySelectorAll('strong').forEach((strong) => {
@@ -119,7 +142,7 @@ const formatHandbookHtml = (markdown: string) => {
   })
 
   root.querySelectorAll('ol').forEach((list) => {
-    if (list.querySelector('li mjx-container, li .MathJax') || list.previousElementSibling?.classList.contains('handbook-solution-title')) {
+    if (list.querySelector('.handbook-display-math, .handbook-inline-math') || list.previousElementSibling?.classList.contains('handbook-solution-title')) {
       list.classList.add('handbook-evaluation-steps')
       list.querySelectorAll(':scope > li').forEach((step) => step.classList.add('handbook-evaluation-step'))
     }
@@ -151,16 +174,19 @@ export function MarkdownHandbook({ kind }: { kind: 'm1' | 'm2' }) {
   const [error, setError] = useState('')
   const [mode, setMode] = useState<HandbookMode>('solutions')
   const [zoomedFormula, setZoomedFormula] = useState('')
-  const handbookBody = useRef<HTMLElement>(null)
 
   useEffect(() => {
-    fetch(`${import.meta.env.BASE_URL}${config.markdown}`)
+    const controller = new AbortController()
+    fetch(`${import.meta.env.BASE_URL}${config.markdown}`, { signal: controller.signal })
       .then((response) => {
         if (!response.ok) throw new Error(`Unable to load handbook (${response.status}).`)
         return response.text()
       })
       .then((content) => setMarkdown(repairTypography(content)))
-      .catch((reason: Error) => setError(reason.message))
+      .catch((reason: Error) => {
+        if (reason.name !== 'AbortError') setError(reason.message)
+      })
+    return () => controller.abort()
   }, [config.markdown])
 
   const html = useMemo(() => formatHandbookHtml(markdown), [markdown])
@@ -180,27 +206,8 @@ export function MarkdownHandbook({ kind }: { kind: 'm1' | 'm2' }) {
 
   const openFormula = (target: EventTarget | null) => {
     const formula = target instanceof Element ? target.closest<HTMLElement>('.handbook-display-math') : null
-    if (formula) setZoomedFormula(formula.innerHTML)
+    if (formula?.dataset.tex) setZoomedFormula(formula.dataset.tex)
   }
-
-  useEffect(() => {
-    const body = handbookBody.current
-    if (!body) return
-    const activateFormula = (event: Event) => openFormula(event.target)
-    const activateFormulaByKeyboard = (event: KeyboardEvent) => {
-      if (event.key !== 'Enter' && event.key !== ' ') return
-      const formula = event.target instanceof Element ? event.target.closest('.handbook-display-math') : null
-      if (!formula) return
-      event.preventDefault()
-      openFormula(formula)
-    }
-    body.addEventListener('click', activateFormula, true)
-    body.addEventListener('keydown', activateFormulaByKeyboard, true)
-    return () => {
-      body.removeEventListener('click', activateFormula, true)
-      body.removeEventListener('keydown', activateFormulaByKeyboard, true)
-    }
-  }, [html])
 
   if (error) return <section className="panel"><h2>Handbook unavailable</h2><p>{error}</p></section>
   if (!markdown) return <section className="panel loading-panel">Loading complete handbook…</section>
@@ -221,18 +228,25 @@ export function MarkdownHandbook({ kind }: { kind: 'm1' | 'm2' }) {
       <div><span className="eyebrow"><Eye size={14} /> Display mode</span><h2>{mode === 'paper' ? 'Closed-book practice mode' : 'VTU-style solution mode'}</h2><p>{mode === 'paper' ? 'Questions and intuition remain visible; formal solutions are hidden until you switch back.' : 'Every answer uses formula, substitution, stepwise working, marks and a boxed result.'}</p></div>
       <div className="mock-action-row"><button className={mode === 'paper' ? 'active' : ''} onClick={() => setMode('paper')}><EyeOff size={17} /> Practice paper</button><button className={mode === 'solutions' ? 'active' : ''} onClick={() => setMode('solutions')}><BookOpenCheck size={17} /> Solutions</button><button onClick={() => window.print()}><Printer size={17} /> Print</button></div>
     </section>
-    <MathJax dynamic>
-      <section
-        ref={handbookBody}
-        className="markdown-handbook-body"
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
-    </MathJax>
+    <section
+      className="markdown-handbook-body"
+      onClick={(event) => openFormula(event.target)}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          const formula = event.target instanceof Element ? event.target.closest('.handbook-display-math') : null
+          if (formula) {
+            event.preventDefault()
+            openFormula(formula)
+          }
+        }
+      }}
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
     {zoomedFormula && createPortal(
       <div className="formula-zoom-overlay" role="dialog" aria-modal="true" aria-label="Enlarged formula" onClick={() => setZoomedFormula('')}>
         <div className="formula-zoom-dialog" onClick={(event) => event.stopPropagation()}>
           <div className="formula-zoom-header"><strong>Formula — enlarged textbook view</strong><button type="button" onClick={() => setZoomedFormula('')} aria-label="Close enlarged formula"><X size={23} /></button></div>
-          <div className="formula-zoom-content mathjax-zoom-content" dangerouslySetInnerHTML={{ __html: zoomedFormula }} />
+          <div className="formula-zoom-content handbook-katex-zoom" dangerouslySetInnerHTML={{ __html: renderKatex(zoomedFormula, true) }} />
           <p><Maximize2 size={13} /> Press Esc, click outside, or use the close button to return.</p>
         </div>
       </div>,

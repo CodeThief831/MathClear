@@ -39,17 +39,32 @@ const extractMath = (value: string) => {
   return { source, blocks }
 }
 
+const formatDisplayTex = (tex: string) => {
+  if (!tex.includes('\n') || /\\begin\{|\\\\/.test(tex)) return tex
+  const lines = tex.split(/\r?\n/).map((line) => line.trim()).filter(Boolean)
+  if (lines.length < 2) return tex
+  const tags = lines.filter((line) => /^\\tag\{/.test(line))
+  const equationLines = lines.filter((line) => !/^\\tag\{/.test(line))
+  if (equationLines.length < 2) return tex
+  return `\\begin{gathered}${equationLines.map((line) => `{${line}}`).join('\\\\')}\\end{gathered}${tags.join('')}`
+}
+
 const renderKatex = (tex: string, displayMode: boolean) => {
+  const options = {
+    displayMode,
+    output: 'htmlAndMathml' as const,
+    strict: false as const,
+    throwOnError: true,
+    trust: false,
+  }
   try {
-    return katex.renderToString(tex, {
-      displayMode,
-      output: 'htmlAndMathml',
-      strict: false,
-      throwOnError: true,
-      trust: false,
-    })
+    return katex.renderToString(displayMode ? formatDisplayTex(tex) : tex, options)
   } catch {
-    return `<code class="math-fallback">${tex.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')}</code>`
+    try {
+      return katex.renderToString(tex, options)
+    } catch {
+      return `<code class="math-fallback">${tex.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')}</code>`
+    }
   }
 }
 

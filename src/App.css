@@ -209,6 +209,14 @@ main{margin-left:250px;min-height:100vh}.topbar{height:74px;padding:0 clamp(22px
 .readable-math:focus-visible{box-shadow:0 8px 20px rgba(2,6,23,.18)}
 .handbook-display-math:hover,
 .handbook-display-math:focus-visible{box-shadow:0 8px 20px rgba(2,6,23,.14)}
+.handbook-display-math,
+.readable-math{scrollbar-width:thin;scrollbar-color:#0f766e #dbe5eb}
+.handbook-display-math::-webkit-scrollbar,
+.readable-math::-webkit-scrollbar{height:8px}
+.handbook-display-math::-webkit-scrollbar-track,
+.readable-math::-webkit-scrollbar-track{background:#dbe5eb}
+.handbook-display-math::-webkit-scrollbar-thumb,
+.readable-math::-webkit-scrollbar-thumb{border:2px solid #dbe5eb;border-radius:999px;background:#0f766e}
 .handbook-evaluation-step{overflow:visible}
 .handbook-evaluation-step>*{min-width:0;max-width:100%}
 .formula-zoom-dialog{display:flex;flex-direction:column}
@@ -218,6 +226,8 @@ main{margin-left:250px;min-height:100vh}.topbar{height:74px;padding:0 clamp(22px
 
 @media(max-width:760px){
 	.handbook-display-math,
-	.readable-math{overscroll-behavior-inline:contain}
+	.readable-math{overscroll-behavior-inline:contain;touch-action:pan-x pan-y}
+	.handbook-display-math::after{content:'Swipe equation sideways · tap to enlarge';text-align:center}
+	.handbook-display-math .katex-display{padding:14px 12px}
 	.formula-zoom-content{max-width:100%}
 }

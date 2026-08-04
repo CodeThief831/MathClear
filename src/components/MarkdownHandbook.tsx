@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { marked } from 'marked'
 import { AlertTriangle, BookOpenCheck, Download, Eye, EyeOff, Maximize2, Printer, X } from 'lucide-react'
@@ -18,6 +18,34 @@ const repairTypography = (value: string) => value
   .replaceAll('Â', '')
 
 type MathToken = { tex: string; display: boolean }
+
+const safelyReflowDisplayTex = (tex: string) => {
+  if (!tex.includes('\n') || /\\begin\{|\\\\/.test(tex)) return tex
+  const lines = tex.split(/\r?\n/).map((line) => line.trim()).filter(Boolean)
+  if (lines.length < 2) return tex
+
+  let braceDepth = 0
+  let delimiterDepth = 0
+  const boundariesAreSafe = lines.slice(0, -1).every((line) => {
+    for (let index = 0; index < line.length; index += 1) {
+      if (line[index] === '\\') {
+        if (line.startsWith('\\left', index)) delimiterDepth += 1
+        if (line.startsWith('\\right', index)) delimiterDepth = Math.max(0, delimiterDepth - 1)
+        index += 1
+        continue
+      }
+      if (line[index] === '{') braceDepth += 1
+      if (line[index] === '}') braceDepth = Math.max(0, braceDepth - 1)
+    }
+    return braceDepth === 0 && delimiterDepth === 0
+  })
+  if (!boundariesAreSafe) return tex
+
+  const tags = lines.filter((line) => /^\\tag\{/.test(line))
+  const equationLines = lines.filter((line) => !/^\\tag\{/.test(line))
+  if (equationLines.length < 2) return tex
+  return `\\begin{gathered}${equationLines.map((line) => `{${line}}`).join('\\\\')}\\end{gathered}${tags.join('')}`
+}
 
 const extractMath = (value: string) => {
   const blocks: MathToken[] = []
@@ -48,9 +76,13 @@ const renderKatex = (tex: string, displayMode: boolean) => {
     trust: false,
   }
   try {
-    return katex.renderToString(tex, options)
+    return katex.renderToString(displayMode ? safelyReflowDisplayTex(tex) : tex, options)
   } catch {
-    return `<code class="math-fallback">${tex.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')}</code>`
+    try {
+      return katex.renderToString(tex, options)
+    } catch {
+      return `<code class="math-fallback">${tex.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')}</code>`
+    }
   }
 }
 
@@ -183,6 +215,7 @@ export function MarkdownHandbook({ kind }: { kind: 'm1' | 'm2' }) {
   const [error, setError] = useState('')
   const [mode, setMode] = useState<HandbookMode>('solutions')
   const [zoomedFormula, setZoomedFormula] = useState('')
+  const handbookBody = useRef<HTMLElement>(null)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -199,6 +232,38 @@ export function MarkdownHandbook({ kind }: { kind: 'm1' | 'm2' }) {
   }, [config.markdown])
 
   const html = useMemo(() => formatHandbookHtml(markdown), [markdown])
+
+  useLayoutEffect(() => {
+    const body = handbookBody.current
+    if (!body) return
+    const fitFormulas = () => {
+      const mobile = window.matchMedia('(max-width: 760px)').matches
+      body.querySelectorAll<HTMLElement>('.handbook-math-scroll').forEach((viewport) => {
+        const display = viewport.querySelector<HTMLElement>('.katex-display')
+        const expression = viewport.querySelector<HTMLElement>('.katex')
+        if (!display || !expression) return
+        display.style.fontSize = ''
+        viewport.classList.remove('formula-fitted')
+        if (!mobile) return
+        const available = viewport.clientWidth - 8
+        const natural = Math.max(expression.scrollWidth, expression.getBoundingClientRect().width)
+        if (natural <= available || natural === 0) return
+        const scale = Math.max(0.38, Math.min(1, available / natural))
+        display.style.fontSize = `${scale}em`
+        viewport.classList.add('formula-fitted')
+      })
+    }
+    const frame = window.requestAnimationFrame(fitFormulas)
+    document.fonts?.ready.then(fitFormulas).catch(() => undefined)
+    const observer = new ResizeObserver(fitFormulas)
+    body.querySelectorAll('.handbook-math-scroll').forEach((viewport) => observer.observe(viewport))
+    window.addEventListener('resize', fitFormulas)
+    return () => {
+      window.cancelAnimationFrame(frame)
+      observer.disconnect()
+      window.removeEventListener('resize', fitFormulas)
+    }
+  }, [html])
 
   useEffect(() => {
     if (!zoomedFormula) return
@@ -238,6 +303,7 @@ export function MarkdownHandbook({ kind }: { kind: 'm1' | 'm2' }) {
       <div className="mock-action-row"><button className={mode === 'paper' ? 'active' : ''} onClick={() => setMode('paper')}><EyeOff size={17} /> Practice paper</button><button className={mode === 'solutions' ? 'active' : ''} onClick={() => setMode('solutions')}><BookOpenCheck size={17} /> Solutions</button><button onClick={() => window.print()}><Printer size={17} /> Print</button></div>
     </section>
     <section
+      ref={handbookBody}
       className="markdown-handbook-body"
       onClick={(event) => openFormula(event.target)}
       onKeyDown={(event) => {

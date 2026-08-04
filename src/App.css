@@ -227,6 +227,9 @@ main{margin-left:250px;min-height:100vh}.topbar{height:74px;padding:0 clamp(22px
 	.handbook-display-math,
 	.readable-math{overscroll-behavior-inline:contain;touch-action:pan-x pan-y}
 	.handbook-zoom-hint{text-align:center}
+	.handbook-math-scroll.formula-fitted{overflow-x:hidden}
+	.handbook-math-scroll.formula-fitted+.handbook-zoom-hint{font-size:0}
+	.handbook-math-scroll.formula-fitted+.handbook-zoom-hint::after{content:'Equation fitted to screen · tap to enlarge';font-size:9px}
 	.handbook-display-math .katex-display{padding:14px 12px}
 	.formula-zoom-content{max-width:100%}
 }

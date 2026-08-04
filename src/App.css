@@ -199,3 +199,25 @@ main{margin-left:250px;min-height:100vh}.topbar{height:74px;padding:0 clamp(22px
 	.handbook-display-math::after{display:none}
 	.handbook-practice-mode .handbook-solution-content{display:block!important}
 }
+
+/* Formula boundary safety: formulas scroll inside their own cards and never scale over nearby work. */
+.readable-math:hover,
+.readable-math:focus-visible,
+.handbook-display-math:hover,
+.handbook-display-math:focus-visible{transform:none!important}
+.readable-math:hover,
+.readable-math:focus-visible{box-shadow:0 8px 20px rgba(2,6,23,.18)}
+.handbook-display-math:hover,
+.handbook-display-math:focus-visible{box-shadow:0 8px 20px rgba(2,6,23,.14)}
+.handbook-evaluation-step{overflow:visible}
+.handbook-evaluation-step>*{min-width:0;max-width:100%}
+.formula-zoom-dialog{display:flex;flex-direction:column}
+.formula-zoom-content{min-width:0;min-height:0;flex:1 1 auto}
+.formula-zoom-header,
+.formula-zoom-dialog>p{flex:0 0 auto}
+
+@media(max-width:760px){
+	.handbook-display-math,
+	.readable-math{overscroll-behavior-inline:contain}
+	.formula-zoom-content{max-width:100%}
+}

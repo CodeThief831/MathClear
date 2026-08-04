@@ -39,16 +39,6 @@ const extractMath = (value: string) => {
   return { source, blocks }
 }
 
-const formatDisplayTex = (tex: string) => {
-  if (!tex.includes('\n') || /\\begin\{|\\\\/.test(tex)) return tex
-  const lines = tex.split(/\r?\n/).map((line) => line.trim()).filter(Boolean)
-  if (lines.length < 2) return tex
-  const tags = lines.filter((line) => /^\\tag\{/.test(line))
-  const equationLines = lines.filter((line) => !/^\\tag\{/.test(line))
-  if (equationLines.length < 2) return tex
-  return `\\begin{gathered}${equationLines.map((line) => `{${line}}`).join('\\\\')}\\end{gathered}${tags.join('')}`
-}
-
 const renderKatex = (tex: string, displayMode: boolean) => {
   const options = {
     displayMode,
@@ -58,13 +48,9 @@ const renderKatex = (tex: string, displayMode: boolean) => {
     trust: false,
   }
   try {
-    return katex.renderToString(displayMode ? formatDisplayTex(tex) : tex, options)
+    return katex.renderToString(tex, options)
   } catch {
-    try {
-      return katex.renderToString(tex, options)
-    } catch {
-      return `<code class="math-fallback">${tex.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')}</code>`
-    }
+    return `<code class="math-fallback">${tex.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')}</code>`
   }
 }
 
@@ -90,12 +76,20 @@ const restoreMath = (root: Element, blocks: MathToken[]) => {
       const math = document.createElement(block.display ? 'div' : 'span')
       math.className = block.display ? 'handbook-display-math' : 'handbook-inline-math'
       math.dataset.tex = block.tex
-      math.innerHTML = renderKatex(block.tex, block.display)
       if (block.display) {
+        const viewport = document.createElement('div')
+        viewport.className = 'handbook-math-scroll'
+        viewport.innerHTML = renderKatex(block.tex, true)
+        const hint = document.createElement('span')
+        hint.className = 'handbook-zoom-hint'
+        hint.textContent = 'Swipe equation sideways · tap to enlarge'
+        math.append(viewport, hint)
         math.setAttribute('role', 'button')
         math.setAttribute('tabindex', '0')
         math.setAttribute('aria-label', 'Enlarge this formula')
         if (block.tex.includes('\\boxed')) math.classList.add('handbook-boxed-result')
+      } else {
+        math.innerHTML = renderKatex(block.tex, false)
       }
       fragment.append(math)
       cursor = match.index! + match[0].length

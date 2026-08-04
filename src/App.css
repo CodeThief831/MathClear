@@ -105,8 +105,9 @@ main{margin-left:250px;min-height:100vh}.topbar{height:74px;padding:0 clamp(22px
 .markdown-handbook-body>span{display:block;min-width:0;max-width:100%;overflow:hidden}
 .markdown-handbook-body p{min-width:0;max-width:100%}
 .markdown-handbook-body mjx-container[display="true"]{width:100%!important;min-width:0!important;max-width:100%!important}
-.handbook-display-math{width:100%;min-width:0;max-width:100%;margin:12px 0;overflow-x:auto;overflow-y:hidden;color:#111827;border:1px solid #cbd5e1;border-radius:9px;background:#fff;cursor:zoom-in;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;-webkit-overflow-scrolling:touch}
-.handbook-display-math::after{content:'Click to enlarge';position:static;width:100%;margin:0;padding:6px 9px;display:block;box-sizing:border-box;color:#475569;border-top:1px solid #e2e8f0;background:#f8fafc;font:700 10px 'DM Sans','Segoe UI',sans-serif;letter-spacing:.4px;text-align:right;text-transform:uppercase}
+.handbook-display-math{width:100%;min-width:0;max-width:100%;margin:12px 0;overflow:hidden;color:#111827;border:1px solid #cbd5e1;border-radius:9px;background:#fff;cursor:zoom-in;transition:border-color .2s ease,box-shadow .2s ease}
+.handbook-math-scroll{width:100%;min-width:0;max-width:100%;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#0f766e #dbe5eb}
+.handbook-zoom-hint{width:100%;padding:6px 9px;display:block;box-sizing:border-box;color:#475569;border-top:1px solid #e2e8f0;background:#f8fafc;font:700 10px 'DM Sans','Segoe UI',sans-serif;letter-spacing:.4px;text-align:right;text-transform:uppercase}
 .handbook-display-math:hover,.handbook-display-math:focus-visible{z-index:2;transform:scale(1.015);border-color:#2dd4bf;box-shadow:0 10px 24px rgba(2,6,23,.16);outline:2px solid #2dd4bf;outline-offset:2px}
 .handbook-display-math mjx-container[display="true"]{margin:0!important;padding:14px 16px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
 .handbook-display-math .katex-display{width:max-content;min-width:100%;margin:0;padding:14px 16px;text-align:center}
@@ -209,13 +210,11 @@ main{margin-left:250px;min-height:100vh}.topbar{height:74px;padding:0 clamp(22px
 .readable-math:focus-visible{box-shadow:0 8px 20px rgba(2,6,23,.18)}
 .handbook-display-math:hover,
 .handbook-display-math:focus-visible{box-shadow:0 8px 20px rgba(2,6,23,.14)}
-.handbook-display-math,
-.readable-math{scrollbar-width:thin;scrollbar-color:#0f766e #dbe5eb}
-.handbook-display-math::-webkit-scrollbar,
+.handbook-math-scroll::-webkit-scrollbar,
 .readable-math::-webkit-scrollbar{height:8px}
-.handbook-display-math::-webkit-scrollbar-track,
+.handbook-math-scroll::-webkit-scrollbar-track,
 .readable-math::-webkit-scrollbar-track{background:#dbe5eb}
-.handbook-display-math::-webkit-scrollbar-thumb,
+.handbook-math-scroll::-webkit-scrollbar-thumb,
 .readable-math::-webkit-scrollbar-thumb{border:2px solid #dbe5eb;border-radius:999px;background:#0f766e}
 .handbook-evaluation-step{overflow:visible}
 .handbook-evaluation-step>*{min-width:0;max-width:100%}
@@ -227,7 +226,7 @@ main{margin-left:250px;min-height:100vh}.topbar{height:74px;padding:0 clamp(22px
 @media(max-width:760px){
 	.handbook-display-math,
 	.readable-math{overscroll-behavior-inline:contain;touch-action:pan-x pan-y}
-	.handbook-display-math::after{content:'Swipe equation sideways · tap to enlarge';text-align:center}
+	.handbook-zoom-hint{text-align:center}
 	.handbook-display-math .katex-display{padding:14px 12px}
 	.formula-zoom-content{max-width:100%}
 }
